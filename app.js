@@ -5,6 +5,23 @@ const loginRoute = require('./routes/loginRoutes');
 const registerRoute = require('./routes/registerRoutes');
 const path = require('path');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const connectToDb = async () => {
+  await mongoose
+    .connect('mongodb://localhost/twitterclone', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+      useCreateIndex: true
+    })
+    .then(() => {
+      console.log('🚀 Connected to database successfully');
+    })
+    .catch(err => {
+      console.log('📶 Db connection failed', err);
+    });
+};
+connectToDb();
 
 app.set('view engine', 'pug');
 app.set('views', 'views');
@@ -24,5 +41,5 @@ app.get('/', middleware.requireLogin, (req, res, next) => {
 
 const port = process.env.port || 3000;
 app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
+  console.log(`🎧 Listening on port ${port}`);
 });

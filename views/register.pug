@@ -4,6 +4,7 @@ block content
     .loginContainer
         h1 Register
         form#registerForm(method="post" onSubmit="event.preventDefault(); validateForm();")
+            p.errorMessage #{errorMessage}
             input(type="text", name="firstName", placeholder="First Name", value=firstName required="")
             input(type="text", name="lastName", placeholder="Last Name", value=lastName required="")
             input(type="text", name="username", placeholder="Username", value=username required="")

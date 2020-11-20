@@ -19,10 +19,10 @@ router.post('/register', (req, res, next) => {
   const payload = req.body;
 
   if(firstName && lastName && username && email && password) {
-
+    
   } else {
       payload.errorMessage = "Make sure each field is a valid value"
-      res.status(422).send('register', payload)
+      res.status(422).render('register', payload)
   }
 });
 
