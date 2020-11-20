@@ -1,15 +1,22 @@
-const express = require("express");
+const express = require('express');
 const app = express();
-const port = 3000;
-app.set("view engine", "pug");
-app.set("views", "views");
+const middleware = require('./middleware');
+const loginRoute = require('./routes/loginRoutes');
+const path = require('path');
 
-app.get("/", (req, res, next) => {
+const port = 3000;
+app.set('view engine', 'pug');
+app.set('views', 'views');
+
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(loginRoute);
+
+app.get('/', middleware.requireLogin, (req, res, next) => {
   const payload = {
-    pageTitle: "Home"
+    pageTitle: 'Home'
   };
 
-  res.status(200).render("home", payload);
+  res.status(200).render('home', payload);
 });
 
 app.listen(port, () => {
