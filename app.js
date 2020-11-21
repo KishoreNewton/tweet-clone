@@ -5,23 +5,7 @@ const loginRoute = require('./routes/loginRoutes');
 const registerRoute = require('./routes/registerRoutes');
 const path = require('path');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const connectToDb = async () => {
-  await mongoose
-    .connect('mongodb://localhost/twitterclone', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useFindAndModify: false,
-      useCreateIndex: true
-    })
-    .then(() => {
-      console.log('🚀 Connected to database successfully');
-    })
-    .catch(err => {
-      console.log('📶 Db connection failed', err);
-    });
-};
-connectToDb();
+const mongoose = require('./database');
 
 app.set('view engine', 'pug');
 app.set('views', 'views');
