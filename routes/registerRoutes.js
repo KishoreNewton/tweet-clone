@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 const User = require('../schemas/User');
+const bcrypt = require('bcrypt');
 
 app.set('view engine', 'pug');
 app.set('views', 'views');
@@ -38,10 +39,17 @@ router.post('/register', async (req, res, next) => {
     }
 
     const data = req.body;
+    data.password = await bcrypt.hash(password, 10);
 
-    User.create(data).then(user => console.log(user));
-
-    res.status(200).render('register');
+    User.create(data)
+      .then(user => {
+        req.session.user = user;
+        return res.redirect('/');
+      })
+      .catch(err => {
+        payload.errorMessage = 'Something Went Wrong';
+        return res.statue(200).render('register', payload);
+      });
   } else {
     payload.errorMessage = 'Make sure each field is a valid value';
     res.status(422).render('register', payload);
