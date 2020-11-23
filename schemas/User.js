@@ -28,7 +28,11 @@ const UserSchema = new Schema(
     },
     password: {
       type: String,
-      default: '/images/profilePic.png'
+      required: true
+    },
+    profilePic: {
+      type: String,
+      default: '/images/profile-pic.jpg'
     }
   },
   { timestamps: true }
