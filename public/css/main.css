@@ -4,6 +4,8 @@
   --buttonHoverBg: #d4edff;
   --lightGrey: rgb(230, 236, 240);
   --spacing: 15px;
+  --greyText: rgb(101, 119, 134);
+  --greyButtonText: rgba(0, 0, 0, 0.34);
 }
 
 * {
@@ -23,6 +25,12 @@ h1 {
   font-size: 19px;
   font-weight: 800;
   margin: 0;
+}
+
+button {
+  background-color: transparent;
+  border: none;
+  color: var(--greyButtonText);
 }
 
 @media screen and (max-width: 1300px) {
@@ -194,7 +202,6 @@ h1 {
   background-color: var(--blueLight);
 }
 
-
 .post {
   display: flex;
   flex-direction: column;
@@ -218,7 +225,7 @@ h1 {
 
 .username,
 .date {
-  color: var(--greyText)
+  color: var(--greyText);
 }
 
 .displayName {

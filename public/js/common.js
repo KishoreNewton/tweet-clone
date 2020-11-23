@@ -13,7 +13,7 @@ document.getElementById('submitPostButton').addEventListener('click', async even
   const data = {
     content: textbox.value
   };
-  const result = await postData('http://localhost:3000/api/posts', data);
+  const result = await postData('/api/posts', data);
   const html = createPost(result);
   console.log(result)
   // const postContainer = document.querySelector('.postsContainer');

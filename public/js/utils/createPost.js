@@ -21,17 +21,17 @@ function createPost(result) {
             <div class='postFooter'>
                 <div class='postButtonContainer'>
                     <button>
-                        <i class='far fa-comment'></i>
+                        <i class='fal fa-comment'></i>
                     </button>
                 </div>
                 <div class='postButtonContainer'>
                     <button>
-                        <i class='fas fa-retweet'></i>
+                        <i class='fal fa-retweet'></i>
                     </button>
                 </div>
                 <div class='postButtonContainer'>
                     <button>
-                        <i class='far fa-heart'></i>
+                        <i class='fal fa-heart'></i>
                     </button>
                 </div>
             </div>
