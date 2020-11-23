@@ -14,8 +14,8 @@ document.getElementById('submitPostButton').addEventListener('click', async even
     content: textbox.value
   };
   const result = await postData('http://localhost:3000/api/posts', data);
-  const postedBy = result.postedBy;
-  const html = createPost(postedBy, result.content);
+  const html = createPost(result);
+  console.log(result)
   // const postContainer = document.querySelector('.postsContainer');
   const newElement = document.createElement('div');
   newElement.classList.add('post');
