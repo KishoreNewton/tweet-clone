@@ -10,14 +10,17 @@ document.getElementById('postTextarea').addEventListener('keyup', event => {
 document.getElementById('submitPostButton').addEventListener('click', async event => {
   const button = event.target;
   const textbox = document.getElementById('postTextarea');
-
   const data = {
     content: textbox.value
   };
-
   const result = await postData('http://localhost:3000/api/posts', data);
-
-  if (result) {
-    console.log(result);
-  }
+  const postedBy = result.postedBy;
+  const html = createPost(postedBy, result.content);
+  // const postContainer = document.querySelector('.postsContainer');
+  const newElement = document.createElement('div');
+  newElement.classList.add('post');
+  newElement.innerHTML = html;
+  document.querySelector('.postsContainer').prepend(newElement);
+  button.disabled = true;
+  textbox.value = '';
 });
