@@ -1,5 +1,7 @@
 :root {
   --blue: #1fa2f1;
+  --green: #1ff131;
+  --red: #f1261f;
   --blueLight: #9bd1f9;
   --buttonHoverBg: #d4edff;
   --lightGrey: rgb(230, 236, 240);
@@ -97,7 +99,7 @@ button {
 
   nav a {
     padding: 10px;
-    font-size: 30px;
+    font-size: 25px;
     width: 55px;
     height: 55px;
     display: flex;
@@ -255,8 +257,22 @@ button {
   padding-right: 5px;
 }
 
-.postButtonContainer button:hover {
+.postButtonContainer:first-child button:hover {
   background-color: #d4edff;
   color: var(--blue);
   border-radius: 50%;
 }
+
+.postButtonContainer:nth-child(2) button:hover {
+  background-color: #ddffd4;
+  color: var(--green);
+  border-radius: 50%;
+}
+
+.postButtonContainer:last-child button:hover {
+  background-color: #ffd4d4;
+  color: var(--red);
+  border-radius: 50%;
+}
+
+

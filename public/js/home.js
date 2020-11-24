@@ -18,10 +18,9 @@ function outPosts(results, container) {
     const newElement = document.createElement('div');
     newElement.classList.add('post');
     const html = createPost(result);
+    newElement.setAttribute('data-id', `${result._id}`);
     newElement.innerHTML = html;
     document.querySelector('.postsContainer').prepend(newElement);
-    // container.pr(html);
-
   });
   if (results.length === 0) {
     container.append('<span class="noResults">Nothing to Display</span>');

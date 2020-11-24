@@ -32,7 +32,7 @@ function createPost(result) {
                     </button>
                 </div>
                 <div class='postButtonContainer'>
-                    <button>
+                    <button class='likeButton'>
                         <i class='fal fa-heart'></i>
                     </button>
                 </div>

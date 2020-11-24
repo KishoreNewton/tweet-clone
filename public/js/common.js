@@ -15,12 +15,22 @@ document.getElementById('submitPostButton').addEventListener('click', async even
   };
   const result = await postData('/api/posts', data);
   const html = createPost(result);
-  console.log(result)
-  // const postContainer = document.querySelector('.postsContainer');
+  console.log(result);
   const newElement = document.createElement('div');
   newElement.classList.add('post');
+  newElement.setAttribute('data-id', `${result._id}`);
   newElement.innerHTML = html;
   document.querySelector('.postsContainer').prepend(newElement);
   button.disabled = true;
   textbox.value = '';
+});
+
+// document.onload(event => {});
+
+document.addEventListener('click', event => {
+  const includedLikeClass = ['fa-heart', 'likeButton'];
+  if (includedLikeClass.some(el => event.target.classList.value.includes(el))) {
+    const button = event.target;
+    const getId = getPostIdFromElement(button);
+  }
 });

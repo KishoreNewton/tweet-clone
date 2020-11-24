@@ -12,7 +12,13 @@ const UserSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User'
     },
-    pinned: Boolean
+    pinned: Boolean,
+    likes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+      }
+    ]
   },
   { timestamps: true }
 );
