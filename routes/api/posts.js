@@ -37,4 +37,13 @@ router.post('/api/posts', middleware.requireLogin, (req, res, next) => {
     });
 });
 
+router.put('/api/posts/:id/like', middleware.requireLogin, (req, res, next) => {
+  const postId = req.params.id;
+  const userId = req.session.user._id;
+  const isLiked = rerq.session.user.likes && req.session.user.likes.includes(postId);
+  console.log('Is Liked' + isLiked);
+  const option = isLiked ? "$pull" : "$addToSet";
+  User.findByIdAndUpdate(userId, { [option]: { likes: postId } });
+});
+
 module.exports = router;

@@ -32,5 +32,13 @@ document.addEventListener('click', event => {
   if (includedLikeClass.some(el => event.target.classList.value.includes(el))) {
     const button = event.target;
     const getId = getPostIdFromElement(button);
+    if (getId === undefined) return;
+    putData(`/api/posts/${getId}/like`)
+      .then(success => {
+        // console.log(success);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 });
