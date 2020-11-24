@@ -43,7 +43,7 @@ router.put('/api/posts/:id/like', middleware.requireLogin, (req, res, next) => {
   const isLiked = rerq.session.user.likes && req.session.user.likes.includes(postId);
   console.log('Is Liked' + isLiked);
   const option = isLiked ? "$pull" : "$addToSet";
-  User.findByIdAndUpdate(userId, { [option]: { likes: postId } });
+  await User.findByIdAndUpdate(userId, { [option]: { likes: postId } });
 });
 
 module.exports = router;
