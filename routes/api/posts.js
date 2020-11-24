@@ -6,6 +6,7 @@ const middleware = require('../../middleware');
 
 router.get('/api/posts', middleware.requireLogin, async (req, res, next) => {
   await Post.find()
+    .populate('postedBy')
     .then(result => res.status(200).send(result))
     .catch(err => {
       console.log(err);

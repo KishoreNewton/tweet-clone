@@ -4,6 +4,8 @@ function createPost(result) {
   const timestamp = result.createdAt;
   const content = result.content;
 
+  if (result.postedBy._id === undefined) return console.log('User Object not populated');
+
   return `
     <div class='mainContentContainer'>
         <div class='userImageContainer'>
