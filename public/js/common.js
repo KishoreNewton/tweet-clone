@@ -34,8 +34,9 @@ document.addEventListener('click', event => {
     const getId = getPostIdFromElement(button);
     if (getId === undefined) return;
     putData(`/api/posts/${getId}/like`)
-      .then(success => {
-        // console.log(success);
+      .then(postData => {
+        console.log(postData.likes.length)
+        button.querySelector(".likes").innerHTML = postData.likes.length || ""
       })
       .catch(err => {
         console.log(err);

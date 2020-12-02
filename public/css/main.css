@@ -35,6 +35,11 @@ button {
   color: var(--greyButtonText);
 }
 
+button i,
+button span {
+  pointer-events: none;
+}
+
 @media screen and (max-width: 1300px) {
   .textIcon {
     display: none;
@@ -276,3 +281,8 @@ button {
 }
 
 
+.likes {
+  color: rgb(148, 148, 148);
+  padding-top: 2px;
+  font-size: 15px;
+}

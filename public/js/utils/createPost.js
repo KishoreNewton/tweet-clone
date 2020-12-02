@@ -34,6 +34,7 @@ function createPost(result) {
                 <div class='postButtonContainer'>
                     <button class='likeButton'>
                         <i class='fal fa-heart'></i>
+                        <span class='likes'>${result.likes.length || ''}</span>
                     </button>
                 </div>
             </div>
