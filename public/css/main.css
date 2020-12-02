@@ -286,3 +286,7 @@ button span {
   padding-top: 2px;
   font-size: 15px;
 }
+
+.postButtonContainer.red button.active {
+  color: var(--red);
+}

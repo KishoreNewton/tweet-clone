@@ -3,6 +3,7 @@ function createPost(result) {
   const displayName = `${postedBy.firstName} ${postedBy.lastName}`;
   const timestamp = timeDifference(new Date(), new Date(result.createdAt));
   const content = result.content;
+  const likeButtonActive = result.likes.includes(userLoggedIn._id) ? 'active' : '';
 
   if (result.postedBy._id === undefined) return console.log('User Object not populated');
 
@@ -26,13 +27,13 @@ function createPost(result) {
                         <i class='fal fa-comment'></i>
                     </button>
                 </div>
-                <div class='postButtonContainer'>
-                    <button>
+                <div class='postButtonContainer green'>
+                    <button class='retweet'>
                         <i class='fal fa-retweet'></i>
                     </button>
                 </div>
-                <div class='postButtonContainer'>
-                    <button class='likeButton'>
+                <div class='postButtonContainer red'>
+                    <button class='likeButton ${likeButtonActive}'>
                         <i class='fal fa-heart'></i>
                         <span class='likes'>${result.likes.length || ''}</span>
                     </button>

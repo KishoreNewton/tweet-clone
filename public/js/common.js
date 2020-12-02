@@ -35,8 +35,12 @@ document.addEventListener('click', event => {
     if (getId === undefined) return;
     putData(`/api/posts/${getId}/like`)
       .then(postData => {
-        console.log(postData.likes.length)
-        button.querySelector(".likes").innerHTML = postData.likes.length || ""
+        button.querySelector(".likes").innerHTML = postData.likes.length || "";
+        if(postData.likes.includes(userLoggedIn._id)) {
+          button.classList.add("active");
+        } else {
+          button.classList.remove("active");
+        }
       })
       .catch(err => {
         console.log(err);
