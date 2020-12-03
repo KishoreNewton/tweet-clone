@@ -6,3 +6,10 @@ function getPostIdFromElement(element, included = ['post']) {
   if (postId === undefined) return alert('Post id undefined');
   return postId;
 }
+
+
+// function getModalIdFromElement(element, included = ['modal']) {
+//   element.classList;
+//   let isRoot = included.some(el => el.classList.value.includes(el));
+//   return isRoot;
+// }

@@ -19,12 +19,14 @@ document.getElementById('submitPostButton').addEventListener('click', async even
 // document.onload(event => {});
 
 document.addEventListener('keyup', event => {
-  // For Submit Button
+  // For tweet Button
   const includesIdOfTextarea = ['postTextarea', 'replyTextarea'];
 
   if (includesIdOfTextarea.some(el => event.target.id.includes(el))) {
     const textBox = event.target;
     const value = textBox.value.trim();
+    const isModal = textBox.closest('.modal') ? true : false;
+    console.log(isModal)
     const submitButton = document.getElementById('submitPostButton');
     if (submitButton.length === 0) return;
     if (value === '') return (submitButton.disabled = true);
@@ -64,15 +66,6 @@ document.addEventListener('click', event => {
     const getId = getPostIdFromElement(button);
     if (getId === undefined) return;
     if (userLoggedIn.retweets.some(el => el.includes(getId))) {
-      console.log('working')
-      postData(`/api/posts/${getId}/deleteTweet`)
-        .then(result => {
-          console.log('it worked')
-          console.log(result);
-        })
-        .catch(err => {
-          console.log(err);
-        });
       return;
     }
     postData(`/api/posts/${getId}/retweet`)
@@ -90,4 +83,28 @@ document.addEventListener('click', event => {
         console.log(err);
       });
   }
+
+  // submit Button
+  // const includesTweetButton = ['submitReplyButton', 'submitPostButton'];
+
+  // if (includesTweetButton.some(el => event.target.classList.value.includes(el))) {
+  //   const button = event.target;
+  //   const isRoot = getModalIdFromElement(button);
+  //   console.log(isRoot)
+    
+  //   postData(`/api/posts/${getId}/retweet`)
+  //     .then(postData => {
+  //       button.querySelector('.retweet').innerHTML = postData.retweetUsers.length || '';
+  //       if (postData.retweetUsers.includes(userLoggedIn._id)) {
+  //         button.classList.add('active');
+  //         button.querySelector('.retweet').classList.add('active');
+  //       } else {
+  //         button.classList.remove('active');
+  //         button.querySelector('.retweet').classList.remove('active');
+  //       }
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // }
 });
