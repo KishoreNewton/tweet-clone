@@ -26,8 +26,10 @@ document.addEventListener('keyup', event => {
     const textBox = event.target;
     const value = textBox.value.trim();
     const isModal = textBox.closest('.modal') ? true : false;
-    console.log(isModal)
-    const submitButton = document.getElementById('submitPostButton');
+    console.log(isModal);
+    const submitButton = isModal
+      ? document.getElementById('submitReplyButton')
+      : document.getElementById('submitPostButton');
     if (submitButton.length === 0) return;
     if (value === '') return (submitButton.disabled = true);
     submitButton.disabled = false;
@@ -91,7 +93,7 @@ document.addEventListener('click', event => {
   //   const button = event.target;
   //   const isRoot = getModalIdFromElement(button);
   //   console.log(isRoot)
-    
+
   //   postData(`/api/posts/${getId}/retweet`)
   //     .then(postData => {
   //       button.querySelector('.retweet').innerHTML = postData.retweetUsers.length || '';
