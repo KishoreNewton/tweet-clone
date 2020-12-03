@@ -1,7 +1,7 @@
 :root {
   --blue: #1fa2f1;
-  --green: #1ff131;
-  --red: #f1261f;
+  --green: rgb(23, 191, 99);
+  --red: rgb(224, 36, 94);
   --blueLight: #9bd1f9;
   --buttonHoverBg: #d4edff;
   --lightGrey: rgb(230, 236, 240);
@@ -284,9 +284,19 @@ button span {
 .likes {
   color: rgb(148, 148, 148);
   padding-top: 2px;
-  font-size: 15px;
+  font-size: 13px;
 }
 
-.postButtonContainer.red button.active {
+/* .postButtonContainer.red button.active {
   color: var(--red);
+} */
+
+.postButtonContainer.red button.active,
+.postButtonContainer.red span.active {
+  color: var(--red);
+}
+
+.postButtonContainer.green button.active,
+.postButtonContainer.green span.active {
+  color: var(--green);
 }

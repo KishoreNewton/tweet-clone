@@ -39,8 +39,10 @@ document.addEventListener('click', event => {
         button.querySelector('.likes').innerHTML = postData.likes.length || '';
         if (postData.likes.includes(userLoggedIn._id)) {
           button.classList.add('active');
+          button.querySelector('.likes').classList.add('active');
         } else {
           button.classList.remove('active');
+          button.querySelector('.likes').classList.remove('active');
         }
       })
       .catch(err => {
@@ -53,7 +55,14 @@ document.addEventListener('click', event => {
     if (getId === undefined) return;
     postData(`/api/posts/${getId}/retweet`)
       .then(postData => {
-        console.log('This thing is working', postData);
+        button.querySelector('.retweet').innerHTML = postData.retweetUsers.length || '';
+        if (postData.retweetUsers.includes(userLoggedIn._id)) {
+          button.classList.add('active');
+          button.querySelector('.retweet').classList.add('active');
+        } else {
+          button.classList.remove('active');
+          button.querySelector('.retweet').classList.remove('active');
+        }
       })
       .catch(err => {
         console.log(err);
