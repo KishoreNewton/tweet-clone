@@ -45,7 +45,7 @@ button span {
     display: none;
   }
 
-  .hoverblue {
+  .hoverBlue {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -81,7 +81,7 @@ button span {
   }
 }
 @media screen and (min-width: 1300px) {
-  .hoverblue {
+  .hoverBlue {
     margin-left: 10%;
     padding-right: 25px;
     display: flex;
@@ -115,7 +115,7 @@ button span {
     color: var(--blue);
   }
 
-  .hoverblue a {
+  .hoverBlue a {
     margin-left: 15px;
   }
 
@@ -125,7 +125,7 @@ button span {
     font-size: 20px;
   }
 
-  .hoverblue:hover {
+  .hoverBlue:hover {
     background-color: var(--buttonHoverBg);
     color: var(--blue);
     border-top-left-radius: 25px;

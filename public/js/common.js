@@ -1,6 +1,6 @@
 document.getElementById('postTextarea').addEventListener('keyup', event => {
-  const textbox = event.target;
-  const value = textbox.value.trim();
+  const textBox = event.target;
+  const value = textBox.value.trim();
   const submitButton = document.getElementById('submitPostButton');
   if (submitButton.length === 0) return;
   if (value === '') return (submitButton.disabled = true);
@@ -9,9 +9,9 @@ document.getElementById('postTextarea').addEventListener('keyup', event => {
 
 document.getElementById('submitPostButton').addEventListener('click', async event => {
   const button = event.target;
-  const textbox = document.getElementById('postTextarea');
+  const textBox = document.getElementById('postTextarea');
   const data = {
-    content: textbox.value
+    content: textBox.value
   };
   const result = await postData('/api/posts', data);
   const html = createPost(result);
@@ -22,25 +22,38 @@ document.getElementById('submitPostButton').addEventListener('click', async even
   newElement.innerHTML = html;
   document.querySelector('.postsContainer').prepend(newElement);
   button.disabled = true;
-  textbox.value = '';
+  textBox.value = '';
 });
 
 // document.onload(event => {});
 
 document.addEventListener('click', event => {
   const includedLikeClass = ['fa-heart', 'likeButton'];
+  const includesRetweetClass = ['fa-retweet', 'retweetButton'];
   if (includedLikeClass.some(el => event.target.classList.value.includes(el))) {
     const button = event.target;
     const getId = getPostIdFromElement(button);
     if (getId === undefined) return;
     putData(`/api/posts/${getId}/like`)
       .then(postData => {
-        button.querySelector(".likes").innerHTML = postData.likes.length || "";
-        if(postData.likes.includes(userLoggedIn._id)) {
-          button.classList.add("active");
+        button.querySelector('.likes').innerHTML = postData.likes.length || '';
+        if (postData.likes.includes(userLoggedIn._id)) {
+          button.classList.add('active');
         } else {
-          button.classList.remove("active");
+          button.classList.remove('active');
         }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+  if (includesRetweetClass.some(el => event.target.classList.value.includes(el))) {
+    const button = event.target;
+    const getId = getPostIdFromElement(button);
+    if (getId === undefined) return;
+    postData(`/api/posts/${getId}/retweet`)
+      .then(postData => {
+        console.log('This thing is working', postData);
       })
       .catch(err => {
         console.log(err);

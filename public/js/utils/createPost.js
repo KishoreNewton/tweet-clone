@@ -28,7 +28,7 @@ function createPost(result) {
                     </button>
                 </div>
                 <div class='postButtonContainer green'>
-                    <button class='retweet'>
+                    <button class='retweetButton'>
                         <i class='fal fa-retweet'></i>
                     </button>
                 </div>
@@ -48,7 +48,7 @@ function timeDifference(current, previous) {
   var msPerHour = msPerMinute * 60;
   var msPerDay = msPerHour * 24;
   var msPerMonth = msPerDay * 30;
-  var msPerYear = msPerDay * 365;
+  var msPerYear = msPerDay * 365; 
 
   var elapsed = current - previous;
 

@@ -71,7 +71,51 @@ router.put('/api/posts/:id/like', middleware.requireLogin, async (req, res, next
     console.log(error);
     res.sendStatus(400);
   });
-  console.log(post)
+  console.log(post);
+
+  res.status(200).send(post);
+});
+
+router.post('/api/posts/:id/retweet', middleware.requireLogin, async (req, res, next) => {
+  const data = {
+    work: "It's Working"
+  };
+  const valueToSend = JSON.stringify(data);
+  return res.status(200).send(valueToSend);
+  const postId = req.params.id;
+  const userId = req.session.user._id;
+  const isLiked = req.session.user.likes && req.session.user.likes.includes(postId);
+  const option = isLiked ? '$pull' : '$addToSet';
+  req.session.user = await User.findByIdAndUpdate(
+    userId,
+    {
+      [option]: {
+        likes: postId
+      }
+    },
+    {
+      new: true
+    }
+  ).catch(error => {
+    console.log(error);
+    res.sendStatus(400);
+  });
+
+  const post = await Post.findByIdAndUpdate(
+    postId,
+    {
+      [option]: {
+        likes: userId
+      }
+    },
+    {
+      new: true
+    }
+  ).catch(error => {
+    console.log(error);
+    res.sendStatus(400);
+  });
+  console.log(post);
 
   res.status(200).send(post);
 });
