@@ -300,3 +300,9 @@ button span {
 .postButtonContainer.green span.active {
   color: var(--green);
 }
+
+.postActionContainer {
+  padding-left: 35px;
+  font-size: 13px;
+  color: var(--greyText);
+}

@@ -7,7 +7,11 @@ const middleware = require('../../middleware');
 router.get('/api/posts', middleware.requireLogin, async (req, res, next) => {
   await Post.find()
     .populate('postedBy')
-    .then(result => res.status(200).send(result))
+    .populate('retweetData')
+    .then(async results => {
+      results = await User.populate(results, { path: "retweetData.postedBy" })
+      res.status(200).send(results);
+    })
     .catch(err => {
       console.log(err);
       res.sendStatus(400);
