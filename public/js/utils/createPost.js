@@ -10,11 +10,11 @@ function createPost(result) {
   const likeButtonActive = result.likes.includes(userLoggedIn._id) ? 'active' : '';
   const retweetButtonActive = result.retweetUsers.includes(userLoggedIn._id) ? 'active' : '';
   let retweetText = '';
-  if(isRetweet) {
+  if (isRetweet) {
     retweetText = `<span>
                     <i class="fa fa-retweet"></i>
                     Retweeted by <a href='/profile/${retweetedBy}'>@${retweetedBy}</a>
-                  </span>`
+                  </span>`;
   }
 
   if (result.postedBy._id === undefined) return console.log('User Object not populated');
@@ -38,14 +38,16 @@ function createPost(result) {
         </div>
         <div class="postFooter">
           <div class="postButtonContainer">
-            <button>
+            <button data-toggle="modal" data-target="#replyModal">
               <i class="fal fa-comment"></i>
             </button>
           </div>
           <div class="postButtonContainer green">
             <button class="retweetButton ${retweetButtonActive}">
               <i class="fal fa-retweet"></i>
-              <span class="retweet ${retweetButtonActive}">${ result.retweetUsers.length || '' }</span>
+              <span class="retweet ${retweetButtonActive}">${
+    result.retweetUsers.length || ''
+  }</span>
             </button>
           </div>
           <div class="postButtonContainer red">

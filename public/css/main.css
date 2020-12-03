@@ -306,3 +306,9 @@ button span {
   font-size: 13px;
   color: var(--greyText);
 }
+
+.modal .postFormContainer {
+  border: none;
+  padding: 0;
+  padding-top: var(--spacing);
+}

@@ -9,7 +9,7 @@ router.get('/api/posts', middleware.requireLogin, async (req, res, next) => {
     .populate('postedBy')
     .populate('retweetData')
     .then(async results => {
-      results = await User.populate(results, { path: "retweetData.postedBy" })
+      results = await User.populate(results, { path: 'retweetData.postedBy' });
       res.status(200).send(results);
     })
     .catch(err => {
@@ -77,6 +77,34 @@ router.put('/api/posts/:id/like', middleware.requireLogin, async (req, res, next
   });
 
   res.status(200).send(post);
+});
+
+router.post('/api/posts/:id/deleteTweet', middleware.requireLogin, async (req, res, next) => {
+  const postId = req.params.id;
+  const userId = req.session.user._id;
+
+  await Post.findOneAndDelete({ postedBy: userId, _id: postId }).catch(error => {
+    console.log(error);
+    res.sendStatus(400);
+  });
+
+  await Post.findOneAndUpdate(
+    { postedBy: userId },
+    {
+      $pull: {
+        retweetUsers: userId
+      }
+    }
+  ).catch(error => {
+    console.log(error);
+    res.sendStatus(400);
+  });
+
+  const data = {
+    result: "success"
+  }
+
+  res.status(200).send(data);
 });
 
 router.post('/api/posts/:id/retweet', middleware.requireLogin, async (req, res, next) => {

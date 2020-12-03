@@ -12,7 +12,6 @@ getPostsData();
 
 function outPosts(results, container) {
   container.innerHtml = '';
-  console.log(results);
 
   results.map(result => {
     const newElement = document.createElement('div');
