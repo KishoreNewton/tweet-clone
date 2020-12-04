@@ -4,18 +4,27 @@ const Post = require('../../schemas/Post');
 const User = require('../../schemas/User');
 const middleware = require('../../middleware');
 
-router.get('/api/posts', middleware.requireLogin, async (req, res, next) => {
-  await Post.find()
+async function getPosts(filter) {
+  const results = await Post.find(filter)
     .populate('postedBy')
     .populate('retweetData')
-    .then(async results => {
-      results = await User.populate(results, { path: 'retweetData.postedBy' });
-      res.status(200).send(results);
-    })
     .catch(err => {
       console.log(err);
       res.sendStatus(400);
-    });
+    })
+
+  return await User.populate(results, { path: 'retweetData.postedBy' });
+}
+
+router.get('/api/posts', middleware.requireLogin, async (req, res, next) => {
+  const results = await getPosts({});
+  res.status(200).send(results);
+});
+
+router.get('/api/posts/:id', middleware.requireLogin, async (req, res, next) => {
+  const postId = req.params.id;
+  const results = await getPosts({ _id: postId });
+  res.status(200).send(results);
 });
 
 router.post('/api/posts', middleware.requireLogin, (req, res, next) => {
