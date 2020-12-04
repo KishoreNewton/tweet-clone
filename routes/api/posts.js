@@ -30,7 +30,6 @@ router.get('/api/posts/:id', middleware.requireLogin, async (req, res, next) => 
 
 router.post('/api/posts', middleware.requireLogin, (req, res, next) => {
   if (!req.body.content) {
-    console.log(req);
     console.log('content param not sent with request');
     return res.sendStatus(400);
   }

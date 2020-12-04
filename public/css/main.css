@@ -280,7 +280,6 @@ button span {
   border-radius: 50%;
 }
 
-
 .likes {
   color: rgb(148, 148, 148);
   padding-top: 2px;
@@ -311,4 +310,9 @@ button span {
   border: none;
   padding: 0;
   padding-top: var(--spacing);
+}
+
+.modal .post {
+  padding: 0;
+  padding-bottom: var(--spacing);
 }

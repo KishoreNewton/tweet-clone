@@ -15,7 +15,6 @@ document.getElementById('submitPostButton').addEventListener('click', async even
     };
     const result = await postData('/api/posts', data);
     const html = createPost(result);
-    console.log(result);
     const newElement = document.createElement('div');
     newElement.classList.add('post');
     newElement.setAttribute('data-id', `${result._id}`);

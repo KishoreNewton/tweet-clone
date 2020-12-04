@@ -1,20 +1,19 @@
-document.getElementById('submitPostButton').addEventListener('click', async event => {
-  const button = event.target;
-  const textBox = document.getElementById('postTextarea');
-  const data = {
-    content: textBox.value
-  };
-  const result = await postData('/api/posts', data);
-  const html = createPost(result);
-  console.log(result);
-  const newElement = document.createElement('div');
-  newElement.classList.add('post');
-  newElement.setAttribute('data-id', `${result._id}`);
-  newElement.innerHTML = html;
-  document.querySelector('.postsContainer').prepend(newElement);
-  button.disabled = true;
-  textBox.value = '';
-});
+// document.getElementById('submitPostButton').addEventListener('click', async event => {
+//   const button = event.target;
+//   const textBox = document.getElementById('postTextarea');
+//   const data = {
+//     content: textBox.value
+//   };
+//   const result = await postData('/api/posts', data);
+//   const html = createPost(result);
+//   const newElement = document.createElement('div');
+//   newElement.classList.add('post');
+//   newElement.setAttribute('data-id', `${result._id}`);
+//   newElement.innerHTML = html;
+//   document.querySelector('.postsContainer').prepend(newElement);
+//   button.disabled = true;
+//   textBox.value = '';
+// });
 
 // document.onload(event => {});
 
@@ -26,15 +25,16 @@ document.addEventListener('keyup', event => {
     const textBox = event.target;
     const value = textBox.value.trim();
     const isModal = textBox.closest('.modal') ? true : false;
-    console.log(isModal)
-    const submitButton = isModal ? document.getElementById('submitReplyButton') : document.getElementById('submitPostButton');
+    const submitButton = isModal
+      ? document.getElementById('submitReplyButton')
+      : document.getElementById('submitPostButton');
     if (submitButton.length === 0) return;
     if (value === '') return (submitButton.disabled = true);
     submitButton.disabled = false;
   }
 });
 
-document.addEventListener('click', event => {
+document.addEventListener('click', async event => {
   // For Like
   const includedLikeClass = ['fa-heart', 'likeButton'];
 
@@ -84,6 +84,33 @@ document.addEventListener('click', event => {
       });
   }
 
+  // For Tweet
+  const includesTweetClass = ['submitPostButton', 'submitReplyButton'];
+  if (includesTweetClass.some(el => event.target.id.includes(el))) {
+    const button = event.target;
+    const isModal = button.closest('.modal') ? true : false;
+    const textBox = isModal
+      ? document.getElementById('replyTextarea')
+      : document.getElementById('postTextarea');
+    const data = {
+      content: textBox.value
+    };
+    if (isModal) {
+      const postId = getPostIdFromElement(button);
+      if (postId === null) alert('Id is not defined.');
+      data.replyTo = postId;
+    }
+    const result = await postData('/api/posts', data);
+    const html = createPost(result);
+    const newElement = document.createElement('div');
+    newElement.classList.add('post');
+    newElement.setAttribute('data-id', `${result._id}`);
+    newElement.innerHTML = html;
+    document.querySelector('.postsContainer').prepend(newElement);
+    button.disabled = true;
+    textBox.value = '';
+  }
+
   // submit Button
   // const includesTweetButton = ['submitReplyButton', 'submitPostButton'];
 
@@ -91,7 +118,7 @@ document.addEventListener('click', event => {
   //   const button = event.target;
   //   const isRoot = getModalIdFromElement(button);
   //   console.log(isRoot)
-    
+
   //   postData(`/api/posts/${getId}/retweet`)
   //     .then(postData => {
   //       button.querySelector('.retweet').innerHTML = postData.retweetUsers.length || '';
