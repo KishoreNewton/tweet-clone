@@ -4,6 +4,6 @@ $('#replyModal').on('shown.bs.modal', async event => {
   console.log(button);
   const postId = getPostIdFromElement(button);
   await getData(`/api/posts/${postId}`).then(response => {
-    console.log(response);
+    outPosts(response, document.getElementById('originalPostContainer'));
   });
 });

@@ -24,7 +24,7 @@ router.get('/api/posts', middleware.requireLogin, async (req, res, next) => {
 router.get('/api/posts/:id', middleware.requireLogin, async (req, res, next) => {
   const postId = req.params.id;
   let results = await getPosts({ _id: postId });
-  results = results[0];
+  // results = results[0];
   res.status(200).send(results);
 });
 
