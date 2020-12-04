@@ -29,6 +29,7 @@ router.get('/api/posts/:id', middleware.requireLogin, async (req, res, next) => 
 });
 
 router.post('/api/posts', middleware.requireLogin, (req, res, next) => {
+
   if (!req.body.content) {
     console.log('content param not sent with request');
     return res.sendStatus(400);
@@ -38,6 +39,10 @@ router.post('/api/posts', middleware.requireLogin, (req, res, next) => {
     content: req.body.content,
     postedBy: req.session.user
   };
+
+  if (req.body.replyTo) {
+    postData.replyTo = req.body.replyTo;
+  }
 
   Post.create(postData)
     .then(async newPost => {
@@ -120,12 +125,10 @@ router.post('/api/posts/:id/retweet', middleware.requireLogin, async (req, res, 
   const postId = req.params.id;
   const userId = req.session.user._id;
 
-  const deletedPost = await Post.findOneAndDelete({ postedBy: userId, retweetData: postId }).catch(
-    error => {
-      console.log(error);
-      res.sendStatus(400);
-    }
-  );
+  const deletedPost = await Post.findOneAndDelete({ postedBy: userId, retweetData: postId }).catch(error => {
+    console.log(error);
+    res.sendStatus(400);
+  });
 
   const option = deletedPost !== null ? '$pull' : '$addToSet';
 

@@ -96,11 +96,14 @@ document.addEventListener('click', async event => {
       content: textBox.value
     };
     if (isModal) {
-      const postId = getPostIdFromElement(button);
-      if (postId === null) alert('Id is not defined.');
+      const postId = button.getAttribute('data-id');
+      if (postId === null) return alert('button is not defined');
       data.replyTo = postId;
     }
     const result = await postData('/api/posts', data);
+    if (result.replyTo) {
+      location.reload();
+    }
     const html = createPost(result);
     const newElement = document.createElement('div');
     newElement.classList.add('post');

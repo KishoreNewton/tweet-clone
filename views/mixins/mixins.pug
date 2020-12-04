@@ -5,7 +5,7 @@ mixin createPostForm(userLoggedIn)
         .textareaContainer
             textarea#postTextarea(placeholder="What's happening?")
             .buttonsContainer
-                button#submitPostButton Tweet
+                button#submitPostButton(disabled="") Tweet
 
 mixin createReplyModal(userLoggedIn)
     #replyModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='replyModalLabel', aria-hidden='true')
