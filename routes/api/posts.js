@@ -11,7 +11,7 @@ async function getPosts(filter) {
     .catch(err => {
       console.log(err);
       res.sendStatus(400);
-    })
+    });
 
   return await User.populate(results, { path: 'retweetData.postedBy' });
 }
@@ -23,7 +23,8 @@ router.get('/api/posts', middleware.requireLogin, async (req, res, next) => {
 
 router.get('/api/posts/:id', middleware.requireLogin, async (req, res, next) => {
   const postId = req.params.id;
-  const results = await getPosts({ _id: postId });
+  let results = await getPosts({ _id: postId });
+  results = results[0];
   res.status(200).send(results);
 });
 
