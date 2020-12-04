@@ -114,27 +114,13 @@ document.addEventListener('click', async event => {
     textBox.value = '';
   }
 
-  // submit Button
-  // const includesTweetButton = ['submitReplyButton', 'submitPostButton'];
-
-  // if (includesTweetButton.some(el => event.target.classList.value.includes(el))) {
-  //   const button = event.target;
-  //   const isRoot = getModalIdFromElement(button);
-  //   console.log(isRoot)
-
-  //   postData(`/api/posts/${getId}/retweet`)
-  //     .then(postData => {
-  //       button.querySelector('.retweet').innerHTML = postData.retweetUsers.length || '';
-  //       if (postData.retweetUsers.includes(userLoggedIn._id)) {
-  //         button.classList.add('active');
-  //         button.querySelector('.retweet').classList.add('active');
-  //       } else {
-  //         button.classList.remove('active');
-  //         button.querySelector('.retweet').classList.remove('active');
-  //       }
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-  // }
+  // For post click
+  const includesPostOnClick = ['post'];
+  if (includesPostOnClick.some(el => event.target.classList.value.includes(el))) {
+    const element = event.target;
+    const getId = getPostIdFromElement(element, ['mainContentContainer']);
+    if (getId !== undefined) {
+      window.location.href = `/posts/${getId}`;
+    }
+  }
 });

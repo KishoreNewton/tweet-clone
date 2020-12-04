@@ -5,14 +5,16 @@ const User = require('../../schemas/User');
 const middleware = require('../../middleware');
 
 async function getPosts(filter) {
-  const results = await Post.find(filter)
+  let results = await Post.find(filter)
     .populate('postedBy')
     .populate('retweetData')
+    .populate('replyTo')
     .catch(err => {
       console.log(err);
       res.sendStatus(400);
     });
 
+  results = await User.populate(results, { path: 'replyTo.postedBy' });
   return await User.populate(results, { path: 'retweetData.postedBy' });
 }
 
@@ -29,7 +31,6 @@ router.get('/api/posts/:id', middleware.requireLogin, async (req, res, next) => 
 });
 
 router.post('/api/posts', middleware.requireLogin, (req, res, next) => {
-
   if (!req.body.content) {
     console.log('content param not sent with request');
     return res.sendStatus(400);

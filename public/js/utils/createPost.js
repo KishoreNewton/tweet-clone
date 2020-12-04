@@ -17,6 +17,18 @@ function createPost(result) {
                   </span>`;
   }
 
+  let replyFlag = '';
+  if (result.replyTo) {
+    if (!result.replyTo._id) return alert('Reply to is not populated');
+    if (!result.replyTo.postedBy._id) return alert('PostedById is not populated');
+    const replyToUsername = result.replyTo.postedBy.username;
+    replyFlag = `
+      <div class="replyFlag">
+        Replying to <a href="/profile/${replyToUsername}">@${replyToUsername}</a>
+      </div>
+    `;
+  }
+
   if (result.postedBy._id === undefined) return console.log('User Object not populated');
 
   return `
@@ -33,6 +45,7 @@ function createPost(result) {
           <span class="username">@${postedBy.username}</span>
           <span class="date">${timestamp}</span>
         </div>
+        ${replyFlag}
         <div class="postBody">
           <span>${content}</span>
         </div>
@@ -45,9 +58,7 @@ function createPost(result) {
           <div class="postButtonContainer green">
             <button class="retweetButton ${retweetButtonActive}">
               <i class="fal fa-retweet"></i>
-              <span class="retweet ${retweetButtonActive}">${
-    result.retweetUsers.length || ''
-  }</span>
+              <span class="retweet ${retweetButtonActive}">${result.retweetUsers.length || ''}</span>
             </button>
           </div>
           <div class="postButtonContainer red">
