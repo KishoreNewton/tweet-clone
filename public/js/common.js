@@ -1,24 +1,6 @@
-// document.getElementById('submitPostButton').addEventListener('click', async event => {
-//   const button = event.target;
-//   const textBox = document.getElementById('postTextarea');
-//   const data = {
-//     content: textBox.value
-//   };
-//   const result = await postData('/api/posts', data);
-//   const html = createPost(result);
-//   const newElement = document.createElement('div');
-//   newElement.classList.add('post');
-//   newElement.setAttribute('data-id', `${result._id}`);
-//   newElement.innerHTML = html;
-//   document.querySelector('.postsContainer').prepend(newElement);
-//   button.disabled = true;
-//   textBox.value = '';
-// });
-
-// document.onload(event => {});
-
+// Keyup Event for Tweet area
 document.addEventListener('keyup', event => {
-  // For tweet Button
+  // For tweet place
   const includesIdOfTextarea = ['postTextarea', 'replyTextarea'];
 
   if (includesIdOfTextarea.some(el => event.target.id.includes(el))) {
@@ -34,6 +16,7 @@ document.addEventListener('keyup', event => {
   }
 });
 
+// Click Event
 document.addEventListener('click', async event => {
   // For Like
   const includedLikeClass = ['fa-heart', 'likeButton'];
