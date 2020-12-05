@@ -11,3 +11,10 @@ $('#replyModal').on('shown.bs.modal', async event => {
 $('#replyModal').on('hidden.bs.modal', async event => {
   document.getElementById('originalPostContainer').innerHTML = '';
 });
+
+
+$('#deletePostModal').on('shown.bs.modal', async event => {
+  const button = event.relatedTarget;
+  const postId = getPostIdFromElement(button);
+  $('#deletePostButton').attr('data-id', postId);
+});

@@ -15,8 +15,10 @@ function outPosts(results, container) {
   });
 
   if (results.length === 0) {
-    const html = '<span class="noResults">Nothing to Display</span>';
-    container.append(html);
+    const newElement = document.createElement('div');
+    const html = '<span class="noResults">Start Tweeting or Follow you taste.</span>';
+    newElement.innerHTML = html;
+    container.append(newElement);
   }
 }
 
@@ -24,14 +26,18 @@ function outPostsWithReplies(results, container) {
 
   if (results.replyTo && results.replyTo._id) {
     const newElement = document.createElement('div');
+    newElement.classList.add('post');
     const html = createPost(results.replyTo);
     newElement.innerHTML = html;
+    newElement.setAttribute('data-id', `${results.postData._id}`);
     container.append(newElement);
   }
 
   const newMainElement = document.createElement('div');
-  const mainPostHtml = createPost(results.postData);
+  newMainElement.classList.add('post');
+  const mainPostHtml = createPost(results.postData, true);
   newMainElement.innerHTML = mainPostHtml;
+  newMainElement.setAttribute('data-id', `${results.postData._id}`);
   container.append(newMainElement);
 
   results.replies.map(result => {

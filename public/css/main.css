@@ -82,6 +82,7 @@ button span {
 }
 @media screen and (min-width: 1300px) {
   .hoverBlue {
+    color: var(--blue);
     margin-left: 10%;
     padding-right: 25px;
     display: flex;
@@ -134,13 +135,6 @@ button span {
     border-bottom-right-radius: 25px;
   }
 }
-
-/* nav .textIcon:hover {
-  background-color: var(--buttonHoverBg);
-  color: var(--blue);
-  border-radius: 50%;
-  height: 30px;
-} */
 
 .mainSectionContainer {
   padding: 0;
@@ -323,4 +317,23 @@ button span {
 
 .replyFlag a {
   color: var(--blue);
+}
+
+.noResults {
+  top: 25px;
+  position: relative;
+  left: 33%;
+}
+
+.largeFont .postBody,
+.largeFont .postFooter {
+  font-size: 23px;
+}
+
+.postContentContainer .header {
+  display: flex;
+}
+
+.postContentContainer .header .date {
+  flex: 1;
 }
