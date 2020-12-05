@@ -3,13 +3,16 @@ extends layouts/main-layout.pug
 block content    
     script.
         var postId = '!{postId}'
-    .postContainer
+    .postsContainer
 
     +createReplyModal(userLoggedIn)
 
 block scripts
-    script(src="/js/utils/outputPosts.js")
     script(src="/js/utils/fetch.js")
+    script(src="/js/utils/outputPosts.js")
+    script(src="/js/utils/modalEvent.js")
+    script(src="/js/utils/createPost.js")
     script(src="/js/utils/getPostId.js")
     script(src="/js/postPage.js")
-  
+    //- script(src="/js/common.js")
+    

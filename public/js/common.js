@@ -84,6 +84,7 @@ document.addEventListener('click', async event => {
       data.replyTo = postId;
     }
     const result = await postData('/api/posts', data);
+    console.log(result);
     if (result.replyTo) {
       location.reload();
     }

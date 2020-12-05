@@ -4,7 +4,7 @@ $('#replyModal').on('shown.bs.modal', async event => {
   const postId = getPostIdFromElement(button);
   $('#submitReplyButton').attr('data-id', postId);
   await getData(`/api/posts/${postId}`).then(response => {
-    outPosts(response, document.getElementById('originalPostContainer'));
+    outPosts(response.postData, document.getElementById('originalPostContainer'));
   });
 });
 
