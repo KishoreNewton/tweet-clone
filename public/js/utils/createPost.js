@@ -1,4 +1,5 @@
 function createPost(result) {
+  console.log(result);
   if (result === null) alert('Post object is null');
   const isRetweet = result.retweetData !== undefined;
   const retweetedBy = isRetweet ? result.postedBy.username : null;
@@ -20,9 +21,9 @@ function createPost(result) {
 
   let replyFlag = '';
   if (result.replyTo) {
-    // console.log(result)
-    // if (result.replyTo._id === null) return alert('Reply to is not populated');
-    // if (result.replyTo.postedBy._id === null) return alert('PostedById is not populated');
+    console.log(result)
+    if (result.replyTo._id === null) return alert('Reply to is not populated');
+    if (result.replyTo.postedBy._id === null) return alert('PostedById is not populated');
     const replyToUsername = result.replyTo.postedBy.username;
     replyFlag = `
       <div class="replyFlag">
