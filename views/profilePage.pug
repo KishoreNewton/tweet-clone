@@ -3,8 +3,18 @@ extends layouts/main-layout.pug
 block content  
     if !profileUser
         h1.errorMessage User not found
-    else
-        span #{profileUser.firstName}
+    else  
+        .profileHeaderContainer
+            .coverPhotoContainer
+
+                .userImageContainer
+                    img(src=profileUser.profilePic, alt="User profile image")
+            .profileButtonsContainer
+                if profileUser._id != userLoggedIn._id
+                    a.profileButton(href=`/messages/${profileUser._id}`)
+                        i.fal.fa-envelope
+                    +createFollowButton(profileUser, true)
+
         .postsContainer
 
         +createPostModals(userLoggedIn)
