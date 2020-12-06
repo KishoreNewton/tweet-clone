@@ -21,14 +21,14 @@ async function getPayload(username, userLoggedIn) {
         userLoggedInJs: JSON.stringify(userLoggedIn)
       };
     }
-
-    return {
-      pageTitle: user.username,
-      userLoggedIn,
-      userLoggedInJs: JSON.stringify(userLoggedIn),
-      profileUser: user
-    };
   }
+
+  return {
+    pageTitle: user.username,
+    userLoggedIn,
+    userLoggedInJs: JSON.stringify(userLoggedIn),
+    profileUser: user
+  };
 }
 
 // GET REQUEST
