@@ -48,9 +48,11 @@ document.addEventListener('click', async event => {
     const button = event.target;
     const getId = getPostIdFromElement(button);
     if (getId === undefined) return;
+
     if (userLoggedIn.retweets.some(el => el.includes(getId))) {
       return;
     }
+
     postData(`/api/posts/${getId}/retweet`)
       .then(postData => {
         button.querySelector('.retweet').innerHTML = postData.retweetUsers.length || '';
@@ -78,16 +80,20 @@ document.addEventListener('click', async event => {
     const data = {
       content: textBox.value
     };
+
     if (isModal) {
       const postId = button.getAttribute('data-id');
       if (postId === null) return alert('button is not defined');
       data.replyTo = postId;
     }
+
     const result = await postData('/api/posts', data);
     console.log(result);
+
     if (result.replyTo) {
       location.reload();
     }
+
     const html = createPost(result);
     const newElement = document.createElement('div');
     newElement.classList.add('post');
@@ -103,6 +109,7 @@ document.addEventListener('click', async event => {
   if (includesPostOnClick.some(el => event.target.classList.value.includes(el))) {
     const element = event.target;
     const getId = getPostIdFromElement(element, ['mainContentContainer']);
+
     if (getId !== undefined) {
       window.location.href = `/posts/${getId}`;
     }

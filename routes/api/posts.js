@@ -18,6 +18,8 @@ async function getPosts(filter) {
   return await User.populate(results, { path: 'retweetData.postedBy' });
 }
 
+// GET REQUESTS
+
 router.get('/api/posts', middleware.requireLogin, async (req, res, next) => {
   const results = await getPosts({});
   res.status(200).send(results);
@@ -40,6 +42,8 @@ router.get('/api/posts/:id', middleware.requireLogin, async (req, res, next) => 
 
   res.status(200).send(results);
 });
+
+// POST REQUESTS
 
 router.post('/api/posts', middleware.requireLogin, (req, res, next) => {
   if (!req.body.content) {
@@ -65,44 +69,6 @@ router.post('/api/posts', middleware.requireLogin, (req, res, next) => {
       console.log(err, 'something went wrong');
       res.sendStatus(400);
     });
-});
-
-router.put('/api/posts/:id/like', middleware.requireLogin, async (req, res, next) => {
-  const postId = req.params.id;
-  const userId = req.session.user._id;
-  const isLiked = req.session.user.likes && req.session.user.likes.includes(postId);
-  const option = isLiked ? '$pull' : '$addToSet';
-  req.session.user = await User.findByIdAndUpdate(
-    userId,
-    {
-      [option]: {
-        likes: postId
-      }
-    },
-    {
-      new: true
-    }
-  ).catch(error => {
-    console.log(error);
-    res.sendStatus(400);
-  });
-
-  const post = await Post.findByIdAndUpdate(
-    postId,
-    {
-      [option]: {
-        likes: userId
-      }
-    },
-    {
-      new: true
-    }
-  ).catch(error => {
-    console.log(error);
-    res.sendStatus(400);
-  });
-
-  res.status(200).send(post);
 });
 
 router.post('/api/posts/:id/retweet', middleware.requireLogin, async (req, res, next) => {
@@ -159,6 +125,59 @@ router.post('/api/posts/:id/retweet', middleware.requireLogin, async (req, res, 
   });
 
   res.status(200).send(post);
+});
+
+// PUT REQUESTS
+
+router.put('/api/posts/:id/like', middleware.requireLogin, async (req, res, next) => {
+  const postId = req.params.id;
+  const userId = req.session.user._id;
+  const isLiked = req.session.user.likes && req.session.user.likes.includes(postId);
+  const option = isLiked ? '$pull' : '$addToSet';
+  req.session.user = await User.findByIdAndUpdate(
+    userId,
+    {
+      [option]: {
+        likes: postId
+      }
+    },
+    {
+      new: true
+    }
+  ).catch(error => {
+    console.log(error);
+    res.sendStatus(400);
+  });
+
+  const post = await Post.findByIdAndUpdate(
+    postId,
+    {
+      [option]: {
+        likes: userId
+      }
+    },
+    {
+      new: true
+    }
+  ).catch(error => {
+    console.log(error);
+    res.sendStatus(400);
+  });
+
+  res.status(200).send(post);
+});
+
+// DELETE REQUESTS
+
+router.delete('/api/posts/:id', (req, res, next) => {
+  Post.findByIdAndDelete(req.params.id)
+    .then(() => {
+      res.sendStatus(202);
+    })
+    .catch(error => {
+      console.log(error);
+      res.sendStatus(400);
+    });
 });
 
 module.exports = router;
