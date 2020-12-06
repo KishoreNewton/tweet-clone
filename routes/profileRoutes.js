@@ -10,19 +10,25 @@ const User = require('../schemas/User');
 
 async function getPayload(username, userLoggedIn) {
   const user = await User.findOne({ username });
+
   if (!user) {
+    const userById = await User.findById(username);
+
+    if (!userById) {
+      return {
+        pageTitle: 'User Not Found',
+        userLoggedIn,
+        userLoggedInJs: JSON.stringify(userLoggedIn)
+      };
+    }
+
     return {
-      pageTitle: 'User Not Found',
+      pageTitle: user.username,
       userLoggedIn,
-      userLoggedInJs: JSON.stringify(userLoggedIn)
+      userLoggedInJs: JSON.stringify(userLoggedIn),
+      profileUser: user
     };
   }
-  return {
-    pageTitle: user.username,
-    userLoggedIn,
-    userLoggedInJs: JSON.stringify(userLoggedIn),
-    profileUser: user
-  };
 }
 
 // GET REQUEST
