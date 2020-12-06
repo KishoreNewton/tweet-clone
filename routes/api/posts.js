@@ -21,7 +21,17 @@ async function getPosts(filter) {
 // GET REQUESTS
 
 router.get('/api/posts', middleware.requireLogin, async (req, res, next) => {
-  const results = await getPosts({});
+  let searchObj = req.query;
+
+  if(searchObj.isReply !== undefined) {
+    console.log(searchObj)
+    const isReply = searchObj.isReply === 'true';
+    searchObj.replyTo = { $exists: isReply };
+    delete searchObj.isReply;
+    console.log({searchOb: searchObj})
+  }
+
+  const results = await getPosts(searchObj);
   res.status(200).send(results);
 });
 
