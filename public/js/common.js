@@ -47,6 +47,7 @@ document.addEventListener('click', async event => {
   if (includesRetweetClass.some(el => event.target.classList.value.includes(el))) {
     const button = event.target;
     const getId = getPostIdFromElement(button);
+    
     if (getId === undefined) return;
 
     if (userLoggedIn.retweets.some(el => el.includes(getId))) {
