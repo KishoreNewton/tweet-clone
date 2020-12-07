@@ -8,4 +8,19 @@ async function loadPosts() {
     });
 }
 
-loadPosts();
+async function loadReplies() {
+  await getData(`/api/posts?postedBy=${profileUserId}&isReply=true`)
+    .then(response => {
+      outPosts(response, document.querySelector('.postsContainer'));
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+
+if(selectedTab === 'replies') {
+   loadReplies();
+} else {
+  loadPosts(); 
+}
+

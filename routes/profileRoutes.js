@@ -55,4 +55,10 @@ router.get('/profile/:username', middleware.requireLogin, async (req, res, next)
   res.status(200).render('profilePage', payload);
 });
 
+router.get('/profile/:username/replies', middleware.requireLogin, async (req, res, next) => {
+  const payload = await getPayload(req.params.username, req.session.user);
+  payload.selectedTab = "replies";
+  res.status(200).render('profilePage', payload);
+});
+
 module.exports = router;

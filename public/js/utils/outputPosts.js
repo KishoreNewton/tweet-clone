@@ -16,7 +16,7 @@ function outPosts(results, container) {
 
   if (results.length === 0) {
     const newElement = document.createElement('div');
-    const html = '<span class="noResults">Start Tweeting or Follow you taste.</span>';
+    const html = '<span class="noResults">Tweets Not found.</span>';
     newElement.innerHTML = html;
     container.append(newElement);
   }
