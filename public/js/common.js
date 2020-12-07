@@ -1,3 +1,5 @@
+let cropper;
+
 // Keyup Event for Tweet area
 document.addEventListener('keyup', event => {
   // For tweet place
@@ -13,6 +15,20 @@ document.addEventListener('keyup', event => {
     if (submitButton.length === 0) return;
     if (value === '') return (submitButton.disabled = true);
     submitButton.disabled = false;
+  }
+});
+
+// Change Event
+document.getElementById('filePhoto').addEventListener('change', event => {
+  const input = event.target;
+  console.log(event.target)
+
+  if (input.files && input.files[0]) {
+    let reader = new FileReader();
+    reader.onload = (e) => {
+      document.getElementById('imagePreview').setAttribute('src', e.target.result);
+    };
+    reader.readAsDataURL(input.files[0]);
   }
 });
 
@@ -89,7 +105,6 @@ document.addEventListener('click', async event => {
     }
 
     const result = await postData('/api/posts', data);
-    console.log(result);
 
     if (result.replyTo) {
       location.reload();
@@ -125,19 +140,19 @@ document.addEventListener('click', async event => {
     putData(`/api/users/${userId}/follow`)
       .then(response => {
         let difference = 1;
-        
+
         if (response.following && response.following.includes(userId)) {
           button.classList.add('following');
           button.innerText = 'Following';
         } else {
           button.classList.remove('following');
           button.innerText = 'Follow';
-          difference = -1
+          difference = -1;
         }
 
         const followersLabel = document.getElementById('followersValue');
 
-        if (followersLabel.length !== 0) {
+        if (followersLabel && followersLabel.length !== 0) {
           const followersText = followersLabel.innerText * 1;
           followersLabel.innerText = followersText + difference;
         }

@@ -1,23 +1,23 @@
-if (selectedTab === 'replies') {
+if (selectedTab === 'followers') {
   loadFollowers();
 } else {
   loadFollowing();
 }
 
-async function loadPosts() {
-  await getData(`/api/posts?postedBy=${profileUserId}&isReply=false`)
+async function loadFollowers() {
+  await getData(`/api/users/${profileUserId}/followers`)
     .then(response => {
-      outPosts(response, document.querySelector('.postsContainer'));
+      outputUsers(response.followers, document.querySelector('.resultsContainer'));
     })
     .catch(err => {
       console.log(err);
     });
 }
 
-async function loadReplies() {
-  await getData(`/api/posts?postedBy=${profileUserId}&isReply=true`)
+async function loadFollowing() {
+  await getData(`/api/users/${profileUserId}/following`)
     .then(response => {
-      outPosts(response, document.querySelector('.postsContainer'));
+      outputUsers(response.following, document.querySelector('.resultsContainer'));
     })
     .catch(err => {
       console.log(err);
