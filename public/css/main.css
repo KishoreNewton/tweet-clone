@@ -116,6 +116,10 @@ button span {
     color: var(--blue);
   }
 
+  .wrapper > .row {
+    margin: 0;
+  }
+
   .hoverBlue a {
     margin-left: 15px;
   }

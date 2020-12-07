@@ -18,7 +18,15 @@ async function getData(url = '') {
   const response = await fetch(url, {
     method: 'GET',
     mode: 'cors',
-    cache: 'no-cache',
+    cache: 'no-cache'
+  });
+  return response.json();
+}
+
+async function putData(url = '') {
+  const response = await fetch(url, {
+    method: 'PUT',
+    mode: 'cors'
   });
   return response.json();
 }
@@ -30,12 +38,4 @@ async function deleteData(url = '') {
     cache: 'no-cache'
   });
   return response.text();
-}
-
-async function putData(url = '') {
-  const response = await fetch(url, {
-    method: 'PUT',
-    mode: 'cors'
-  });
-  return response.json();
 }

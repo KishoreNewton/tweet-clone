@@ -47,7 +47,7 @@ document.addEventListener('click', async event => {
   if (includesRetweetClass.some(el => event.target.classList.value.includes(el))) {
     const button = event.target;
     const getId = getPostIdFromElement(button);
-    
+
     if (getId === undefined) return;
 
     if (userLoggedIn.retweets.some(el => el.includes(getId))) {
@@ -114,5 +114,36 @@ document.addEventListener('click', async event => {
     if (getId !== undefined) {
       window.location.href = `/posts/${getId}`;
     }
+  }
+
+  // For follow button
+  const includesFollowOnClick = ['followButton'];
+  if (includesFollowOnClick.some(el => event.target.classList.value.includes(el))) {
+    const button = event.target;
+    const userId = button.getAttribute('data-user');
+
+    putData(`/api/users/${userId}/follow`)
+      .then(response => {
+        let difference = 1;
+        
+        if (response.following && response.following.includes(userId)) {
+          button.classList.add('following');
+          button.innerText = 'Following';
+        } else {
+          button.classList.remove('following');
+          button.innerText = 'Follow';
+          difference = -1
+        }
+
+        const followersLabel = document.getElementById('followersValue');
+
+        if (followersLabel.length !== 0) {
+          const followersText = followersLabel.innerText * 1;
+          followersLabel.innerText = followersText + difference;
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 });

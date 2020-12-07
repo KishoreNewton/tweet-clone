@@ -1,7 +1,7 @@
 if (selectedTab === 'replies') {
-  loadReplies();
+  loadFollowers();
 } else {
-  loadPosts();
+  loadFollowing();
 }
 
 async function loadPosts() {
