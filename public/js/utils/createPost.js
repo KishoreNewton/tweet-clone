@@ -1,5 +1,4 @@
 function createPost(result, largeFont = false) {
-
   if (result === null) alert('Post object is null');
   const isRetweet = result.retweetData !== undefined;
   const retweetedBy = isRetweet ? result.postedBy.username : null;
@@ -10,7 +9,7 @@ function createPost(result, largeFont = false) {
   const content = result.content;
   const likeButtonActive = result.likes.includes(userLoggedIn._id) ? 'active' : '';
   const retweetButtonActive = result.retweetUsers.includes(userLoggedIn._id) ? 'active' : '';
-  const largeFontClass = largeFont ? "largeFont" : "";
+  const largeFontClass = largeFont ? 'largeFont' : '';
   let retweetText = '';
   if (isRetweet) {
     retweetText = `<span>
@@ -31,9 +30,23 @@ function createPost(result, largeFont = false) {
     `;
   }
 
-  let button = "";
-  if(result.postedBy._id === userLoggedIn._id) {
-    button = `<button data-id="${result._id}" data-toggle="modal" data-target="#deletePostModal"><i class="fal fa-times"></i></button>`
+  let button = '';
+  let pinnedPostHtml = '';
+  if (result.postedBy._id === userLoggedIn._id) {
+    let pinned = false;
+    let dataTarget = '#confirmPinModal';
+    if (result.pinned) {
+      pinned = true;
+      dataTarget = '#unpinModal';
+      pinnedPostHtml = "<i class='fad fa-thumbtack'></i> <span>Pinned Post</span>";
+    }
+
+    button = `<button data-id="${result._id}" data-toggle="modal" data-target="#deletePostModal">
+                <i class="fal fa-times"></i>
+              </button>
+              <button data-id="${result._id}" data-toggle="modal" data-target="${dataTarget}">
+                <i class="${pinned ? 'fad fa-thumbtack' : 'fal fa-thumbtack'}"></i>
+              </button>`;
   }
 
   if (result.postedBy._id === undefined) return console.log('User Object not populated');
@@ -48,6 +61,7 @@ function createPost(result, largeFont = false) {
           <img src="${postedBy.profilePic}" />
         </div>
         <div class="postContentContainer">
+          <div class='pinnedPostText'> ${pinnedPostHtml} </div>
           <div class="header">
             <a href="/profile/${postedBy.username}" class="displayName">${displayName}</a>
             <span class="username">@${postedBy.username}</span>

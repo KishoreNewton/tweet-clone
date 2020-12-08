@@ -32,7 +32,8 @@ const UserSchema = new Schema(
     replyTo: {
       type: Schema.Types.ObjectId,
       ref: 'Post'
-    }
+    },
+    pinned: Boolean
   },
   { timestamps: true }
 );

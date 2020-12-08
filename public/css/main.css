@@ -443,6 +443,10 @@ button span {
   background-color: var(--blueBackground);
 }
 
+.noResults {
+  padding: var(--spacing);
+}
+
 .resultsContainer {
   display: flex;
   flex-direction: column;
@@ -459,19 +463,47 @@ button span {
   padding: 0 var(--spacing);
 }
 
-.profilePictureButton {
+.profilePictureButton,
+.coverPhotoButton {
   position: absolute;
   font-size: 50px;
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(255, 255, 255, 0.6);
   display: none;
 }
 
-.userImageContainer:hover .profilePictureButton {
+.coverPhotoSection {
+  height: 180px;
+  background-color: var(--blue);
+  position: relative;
+}
+
+.userImageContainer:hover .profilePictureButton,
+.coverPhotoContainer:hover .coverPhotoButton {
   display: block;
 }
 
-#imagePreview {
+.coverPhotoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.coverPhotoContainer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#imagePreview,
+#coverPreview {
   width: 100%;
   display: block;
-  max-width: 100% !important;
+  /* This rule is very important, please don't ignore this */
+  max-width: 100%;
+}
+
+.pinnedPostText {
+  font-size: 12px;
+  color: var(--greyText);
 }

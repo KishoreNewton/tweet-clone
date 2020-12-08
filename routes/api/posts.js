@@ -195,6 +195,30 @@ router.put('/api/posts/:id/like', middleware.requireLogin, async (req, res, next
   res.status(200).send(post);
 });
 
+router.put('/api/posts/:id', middleware.requireLogin, async (req, res, next) => {
+  if (req.body.pinned !== undefined) {
+    await Post.updateMany(
+      {
+        postedBy: req.session.user
+      },
+      {
+        pinned: false
+      }
+    ).catch(error => {
+      console.log(error);
+      res.sendStatus(400);
+    });
+  }
+
+  await Post.findByIdAndUpdate(req.params.id, req.body)
+    .then(() => {
+      res.sendStatus(204);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
+
 // DELETE REQUESTS
 
 router.delete('/api/posts/:id', (req, res, next) => {

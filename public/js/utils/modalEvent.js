@@ -18,3 +18,10 @@ $('#deletePostModal').on('shown.bs.modal', async event => {
   const postId = getPostIdFromElement(button);
   $('#deletePostButton').attr('data-id', postId);
 });
+
+
+$('#confirmPinModal').on('shown.bs.modal', async event => {
+  const button = event.relatedTarget;
+  const postId = getPostIdFromElement(button);
+  $('#pinPostButton').attr('data-id', postId);
+});

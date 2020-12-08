@@ -22,6 +22,25 @@ function outPosts(results, container) {
   }
 }
 
+function outPinnedPosts(results, container) {
+  if (!Array.isArray(results)) {
+    results = [results];
+  }
+
+  if(results.length === 0) {
+    container.style.hidden = true;
+    return
+  }
+
+  results.map(result => {
+    const newElement = document.createElement('div');
+    newElement.classList.add('post');
+    const html = createPost(result);
+    newElement.innerHTML = html;
+    container.append(newElement);
+  });
+}
+
 function outPostsWithReplies(results, container) {
 
   if (results.replyTo && results.replyTo._id) {

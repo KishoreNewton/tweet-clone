@@ -19,28 +19,53 @@ document.addEventListener('keyup', event => {
 });
 
 // Change Event
-document.getElementById('filePhoto') && document.getElementById('filePhoto').addEventListener('change', event => {
-  const input = event.target;
-  console.log(event.target);
+document.getElementById('filePhoto') &&
+  document.getElementById('filePhoto').addEventListener('change', event => {
+    const input = event.target;
+    console.log(event.target);
 
-  if (input.files && input.files[0]) {
-    let reader = new FileReader();
-    reader.onload = e => {
-      const image = document.getElementById('imagePreview');
-      image.src = e.target.result;
-      // image.setAttribute('src', e.target.result);
+    if (input.files && input.files[0]) {
+      let reader = new FileReader();
+      reader.onload = e => {
+        const image = document.getElementById('imagePreview');
+        image.src = e.target.result;
+        // image.setAttribute('src', e.target.result);
 
-      if (cropper !== undefined) {
-        cropper.destroy();
-      }
-      cropper = new Cropper(image, {
-        aspectRatio: 1 / 1,
-        background: false
-      });
-    };
-    reader.readAsDataURL(input.files[0]);
-  }
-});
+        if (cropper !== undefined) {
+          cropper.destroy();
+        }
+        cropper = new Cropper(image, {
+          aspectRatio: 1 / 1,
+          background: false
+        });
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  });
+
+document.getElementById('coverPhoto') &&
+  document.getElementById('coverPhoto').addEventListener('change', event => {
+    const input = event.target;
+    console.log(event.target);
+
+    if (input.files && input.files[0]) {
+      let reader = new FileReader();
+      reader.onload = e => {
+        const image = document.getElementById('coverPreview');
+        image.src = e.target.result;
+        // image.setAttribute('src', e.target.result);
+
+        if (cropper !== undefined) {
+          cropper.destroy();
+        }
+        cropper = new Cropper(image, {
+          aspectRatio: 16 / 9,
+          background: false
+        });
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  });
 
 // Click Event
 document.addEventListener('click', async event => {
@@ -172,7 +197,7 @@ document.addEventListener('click', async event => {
       });
   }
 
-  // For the image upload
+  // For the profile image upload
   const imageUploadIncludes = ['imageUploadButton'];
   if (imageUploadIncludes.some(el => event.target.id.includes(el))) {
     let canvas = cropper.getCroppedCanvas();
@@ -186,6 +211,27 @@ document.addEventListener('click', async event => {
       formData.append('croppedImage', blob);
 
       await postImage(`/api/users/profilePicture`, formData)
+        .then(() => {
+          location.reload();
+        })
+        .catch(err => console.log(err));
+    });
+  }
+
+  // For the cover photo upload
+  const imageCoverUploadsIncludes = ['coverPhotoButton'];
+  if (imageCoverUploadsIncludes.some(el => event.target.id.includes(el))) {
+    let canvas = cropper.getCroppedCanvas();
+
+    if (!canvas) {
+      alert('could not upload image. Make sure it is an image file');
+    }
+
+    canvas.toBlob(async blob => {
+      let formData = new FormData();
+      formData.append('croppedImage', blob);
+
+      await postImage(`/api/users/coverPhoto`, formData)
         .then(() => {
           location.reload();
         })

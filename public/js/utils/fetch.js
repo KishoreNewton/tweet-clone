@@ -44,6 +44,22 @@ async function putData(url = '') {
   return response.json();
 }
 
+async function putDataWith(url = '', data) {
+  const response = await fetch(url, {
+    method: 'PUT',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify(data)
+  });
+  return response.text();
+}
+
 async function deleteData(url = '') {
   const response = await fetch(url, {
     method: 'DELETE',
