@@ -5,18 +5,33 @@ block content
         span.errorMessage Check the url you are trying to access
     else  
         script.
-            const profileUserId = '!{profileUser._id}'
-            const selectedTab = '!{selectedTab}'
+            var profileUserId = '!{profileUser._id}';
+            var selectedTab = '!{selectedTab}';
+
+        - followersCount = profileUser.followers.length
+        - followingCount = profileUser.following.length
+            
         .profileHeaderContainer
             .coverPhotoContainer
 
                 .userImageContainer
                     img(src=profileUser.profilePic, alt="User profile image")
+
+                    if profileUser._id == userLoggedIn._id
+                        button.profilePictureButton(data-toggle="modal", data-target="#imageUploadModal")
+                            i.fas.fa-camera
+
             .profileButtonsContainer
                 if profileUser._id != userLoggedIn._id
                     a.profileButton(href=`/messages/${profileUser._id}`)
-                        i.fal.fa-envelope
-                    +createFollowButton(profileUser, false)
+                        i.fas.fa-envelope
+
+                    - var profileUserId = profileUser._id.toString();
+                    - if(userLoggedIn.following && userLoggedIn.following.includes(profileUserId))
+                        +createFollowButton(profileUser, true)
+                    - else
+                        +createFollowButton(profileUser, false)
+
             .userDetailsContainer
                 span.displayName #{profileUser.firstName} #{profileUser.lastName}
                 span.username @#{profileUser.username}
@@ -24,18 +39,20 @@ block content
 
                 .followersContainer
                     a(href=`/profile/${profileUser.username}/following`)
-                        span.value #{0}
+                        span.value #{followingCount}
                         span Following
                     a(href=`/profile/${profileUser.username}/followers`)
-                        span.value #{0}
+                        span#followersValue.value #{followersCount}
                         span Followers
         .tabsContainer
             +createTab("Posts", `/profile/${profileUser.username}`, selectedTab != "replies")
-            +createTab("Replies", `/profile/${profileUser.username}/replies`, selectedTab == "replies") 
+            +createTab("Replies", `/profile/${profileUser.username}/replies`, selectedTab == "replies")
+
 
         .postsContainer
 
         +createPostModals(userLoggedIn)
+        +createImageUploadModal()
 
 block scripts
     script(src="/js/utils/fetch.js")

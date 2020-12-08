@@ -116,6 +116,10 @@ button span {
     color: var(--blue);
   }
 
+  .wrapper > .row {
+    margin: 0;
+  }
+
   .hoverBlue a {
     margin-left: 15px;
   }
@@ -354,6 +358,9 @@ button span {
   margin-left: var(--spacing);
   position: absolute;
   bottom: -66px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .profileHeaderContainer .userImageContainer img {
@@ -434,4 +441,37 @@ button span {
 .tab:hover {
   color: var(--blue);
   background-color: var(--blueBackground);
+}
+
+.resultsContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.resultsContainer .user {
+  padding: var(--spacing);
+  display: flex;
+  border-bottom: 1px solid var(--lightGrey);
+}
+
+.user .userDetailsContainer {
+  flex: 1;
+  padding: 0 var(--spacing);
+}
+
+.profilePictureButton {
+  position: absolute;
+  font-size: 50px;
+  color: rgba(0, 0, 0, 0.6);
+  display: none;
+}
+
+.userImageContainer:hover .profilePictureButton {
+  display: block;
+}
+
+#imagePreview {
+  width: 100%;
+  display: block;
+  max-width: 100% !important;
 }

@@ -57,8 +57,22 @@ router.get('/profile/:username', middleware.requireLogin, async (req, res, next)
 
 router.get('/profile/:username/replies', middleware.requireLogin, async (req, res, next) => {
   const payload = await getPayload(req.params.username, req.session.user);
-  payload.selectedTab = "replies";
+  payload.selectedTab = 'replies';
   res.status(200).render('profilePage', payload);
+});
+
+router.get('/profile/:username/following', middleware.requireLogin, async (req, res, next) => {
+  const payload = await getPayload(req.params.username, req.session.user);
+  payload.selectedTab = 'following';
+
+  res.status(200).render('followersAndFollowing', payload);
+});
+
+router.get('/profile/:username/followers', middleware.requireLogin, async (req, res, next) => {
+  const payload = await getPayload(req.params.username, req.session.user);
+  payload.selectedTab = 'followers';
+
+  res.status(200).render('followersAndFollowing', payload);
 });
 
 module.exports = router;

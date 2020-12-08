@@ -1,3 +1,9 @@
+if (selectedTab === 'replies') {
+  loadReplies();
+} else {
+  loadPosts();
+}
+
 async function loadPosts() {
   await getData(`/api/posts?postedBy=${profileUserId}&isReply=false`)
     .then(response => {
@@ -17,10 +23,3 @@ async function loadReplies() {
       console.log(err);
     });
 }
-
-if(selectedTab === 'replies') {
-   loadReplies();
-} else {
-  loadPosts(); 
-}
-

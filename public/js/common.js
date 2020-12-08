@@ -1,3 +1,5 @@
+let cropper;
+
 // Keyup Event for Tweet area
 document.addEventListener('keyup', event => {
   // For tweet place
@@ -13,6 +15,30 @@ document.addEventListener('keyup', event => {
     if (submitButton.length === 0) return;
     if (value === '') return (submitButton.disabled = true);
     submitButton.disabled = false;
+  }
+});
+
+// Change Event
+document.getElementById('filePhoto') && document.getElementById('filePhoto').addEventListener('change', event => {
+  const input = event.target;
+  console.log(event.target);
+
+  if (input.files && input.files[0]) {
+    let reader = new FileReader();
+    reader.onload = e => {
+      const image = document.getElementById('imagePreview');
+      image.src = e.target.result;
+      // image.setAttribute('src', e.target.result);
+
+      if (cropper !== undefined) {
+        cropper.destroy();
+      }
+      cropper = new Cropper(image, {
+        aspectRatio: 1 / 1,
+        background: false
+      });
+    };
+    reader.readAsDataURL(input.files[0]);
   }
 });
 
@@ -47,7 +73,7 @@ document.addEventListener('click', async event => {
   if (includesRetweetClass.some(el => event.target.classList.value.includes(el))) {
     const button = event.target;
     const getId = getPostIdFromElement(button);
-    
+
     if (getId === undefined) return;
 
     if (userLoggedIn.retweets.some(el => el.includes(getId))) {
@@ -89,7 +115,6 @@ document.addEventListener('click', async event => {
     }
 
     const result = await postData('/api/posts', data);
-    console.log(result);
 
     if (result.replyTo) {
       location.reload();
@@ -114,5 +139,57 @@ document.addEventListener('click', async event => {
     if (getId !== undefined) {
       window.location.href = `/posts/${getId}`;
     }
+  }
+
+  // For follow button
+  const includesFollowOnClick = ['followButton'];
+  if (includesFollowOnClick.some(el => event.target.classList.value.includes(el))) {
+    const button = event.target;
+    const userId = button.getAttribute('data-user');
+
+    putData(`/api/users/${userId}/follow`)
+      .then(response => {
+        let difference = 1;
+
+        if (response.following && response.following.includes(userId)) {
+          button.classList.add('following');
+          button.innerText = 'Following';
+        } else {
+          button.classList.remove('following');
+          button.innerText = 'Follow';
+          difference = -1;
+        }
+
+        const followersLabel = document.getElementById('followersValue');
+
+        if (followersLabel && followersLabel.length !== 0) {
+          const followersText = followersLabel.innerText * 1;
+          followersLabel.innerText = followersText + difference;
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  // For the image upload
+  const imageUploadIncludes = ['imageUploadButton'];
+  if (imageUploadIncludes.some(el => event.target.id.includes(el))) {
+    let canvas = cropper.getCroppedCanvas();
+
+    if (!canvas) {
+      alert('could not upload image. Make sure it is an image file');
+    }
+
+    canvas.toBlob(async blob => {
+      let formData = new FormData();
+      formData.append('croppedImage', blob);
+
+      await postImage(`/api/users/profilePicture`, formData)
+        .then(() => {
+          location.reload();
+        })
+        .catch(err => console.log(err));
+    });
   }
 });
