@@ -9,8 +9,29 @@ const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 
 // GET REQUESTS
+router.get('/api/users/', middleware.requireLogin, async (req, res, next) => {
+  let searchObj = req.query;
+
+  if (req.query.search !== undefined) {
+    searchObj = {
+      $or: [
+        { firstName: { $regex: req.query.search, $options: 'i' } },
+        { lastName: { $regex: req.query.search, $options: 'i' } },
+        { username: { $regex: req.query.search, $options: 'i' } }
+      ]
+    };
+  }
+
+  await User.find(searchObj)
+    .then(results => {
+      res.status(200).send(results);
+    })
+    .catch(err => {
+      res.sendStatus(400);
+    });
+});
+
 router.get('/api/users/:userId/followers', middleware.requireLogin, async (req, res, next) => {
-  console.log(req.params.userId);
   await User.findById(req.params.userId)
     .populate('followers')
     .then(results => {

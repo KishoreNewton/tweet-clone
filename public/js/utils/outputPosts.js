@@ -27,22 +27,22 @@ function outPinnedPosts(results, container) {
     results = [results];
   }
 
-  if(results.length === 0) {
+  if (results.length === 0) {
     container.style.hidden = true;
-    return
+    return;
   }
 
   results.map(result => {
     const newElement = document.createElement('div');
     newElement.classList.add('post');
     const html = createPost(result);
+    newElement.setAttribute('data-id', `${result._id}`);
     newElement.innerHTML = html;
     container.append(newElement);
   });
 }
 
 function outPostsWithReplies(results, container) {
-
   if (results.replyTo && results.replyTo._id) {
     const newElement = document.createElement('div');
     newElement.classList.add('post');

@@ -29,6 +29,11 @@ router.get('/api/posts', middleware.requireLogin, async (req, res, next) => {
     delete searchObj.isReply;
   }
 
+  if(searchObj.search !== undefined) {
+    searchObj.content = { $regex: searchObj.search, $options: "i" };
+    delete searchObj.search;
+  }
+
   if (searchObj.followingOnly !== undefined) {
     const followingOnly = searchObj.followingOnly === 'true';
 

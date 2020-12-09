@@ -43,6 +43,7 @@ mixin createPostModals(userLoggedIn)
     +createReplyModal(userLoggedIn)
     +createDeletePostModal()
     +createPinnedPostModal()
+    +createUnpinModal()
 
 mixin createFollowButton(user, isFollowing)
     - text = isFollowing ? "Following" : "Follow"
@@ -101,15 +102,15 @@ mixin createPinnedPostModal()
                     button.btn.btn-secondary(type='button', data-dismiss='modal') Cancel
                     button#pinPostButton.btn.btn-primary(type='button') Pin
 mixin createUnpinModal()
-    #confirmPinModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='confirmPinModal', aria-hidden='true')
+    #unpinModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='unpinModalLabel', aria-hidden='true')
         .modal-dialog(role='document')
             .modal-content
                 .modal-header
-                    h5#confirmPinModalLabel.modal-title Pin this post?
+                    h5#unpinModalLabel.modal-title UnPin this post?
                     button.close(type='button', data-dismiss='modal', aria-label='Close')
                     span(aria-hidden='true') &times;
                 .modal-body
-                    p This post will appear at the top of your profile. You can pin only one post.
+                    p This post will remove from being pinned to the top of page.
                 .modal-footer
                     button.btn.btn-secondary(type='button', data-dismiss='modal') Cancel
-                    button#pinPostButton.btn.btn-primary(type='button') Pin
+                    button#unpinPostButton.btn.btn-primary(type='button') Unpin
