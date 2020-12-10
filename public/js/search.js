@@ -20,11 +20,11 @@ document.getElementById('searchBox') &&
 async function search(searchTerm, searchType) {
   const url = searchType === 'users' ? '/api/users' : '/api/posts';
   await getData(`${url}?search=${searchTerm}`).then(response => {
-    if(searchType === 'users') {
-
+    if (searchType === 'users') {
+      outputUsers(response, document.querySelector('.resultsContainer'));
     } else {
-        document.querySelector('.resultsContainer').innerHTML = ''
-        outPosts(response, document.querySelector('.resultsContainer'))
+      document.querySelector('.resultsContainer').innerHTML = '';
+      outPosts(response, document.querySelector('.resultsContainer'));
     }
   });
 }
