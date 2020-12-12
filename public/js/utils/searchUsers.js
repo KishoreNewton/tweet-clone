@@ -13,7 +13,10 @@ async function searchUsers(searchTerm) {
 }
 
 function outputSelectableUsers(results, container) {
-  container.innerHTML = ''
+  container.innerHTML = '';
+  results.map(result => {
+    let html = createUser
+  })
 }
 
 document.getElementById('userSearchTextbox') &&
