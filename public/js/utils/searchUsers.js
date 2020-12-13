@@ -14,9 +14,14 @@ async function searchUsers(searchTerm) {
 
 function outputSelectableUsers(results, container) {
   container.innerHTML = '';
+
   results.map(result => {
-    let html = createUser
-  })
+    if (result._id === userLoggedIn._id) {
+      return;
+    }
+    let html = createUser;
+    container.appendChild(html);
+  });
 }
 
 document.getElementById('userSearchTextbox') &&
