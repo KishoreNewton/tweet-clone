@@ -1,10 +1,9 @@
-const { response } = require('express');
-
 let timer;
 
 async function searchUsers(searchTerm) {
-  await getData(`/api/users?search${searchTerm}`)
+  await getData(`/api/users?search=${searchTerm}`)
     .then(response => {
+      console.log(response);
       outputSelectableUsers(response, document.querySelector('.resultsContainer'));
     })
     .catch(err => {
@@ -14,12 +13,15 @@ async function searchUsers(searchTerm) {
 
 function outputSelectableUsers(results, container) {
   container.innerHTML = '';
+  console.log(results);
 
   results.map(result => {
+    console.log(result);
     if (result._id === userLoggedIn._id) {
-      return;
+      console.log('returned');
     }
-    let html = createUser;
+    console.log('working');
+    let html = createUserHtml(result, true);
     container.appendChild(html);
   });
 }

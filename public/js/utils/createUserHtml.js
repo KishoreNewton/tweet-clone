@@ -1,4 +1,5 @@
 function createUserHtml(userData, showFollowButton) {
+  console.log('working')
   const { firstName, lastName, username, profilePic } = userData;
   const name = `${firstName} ${lastName}`;
   const isFollowing = userLoggedIn.following && userLoggedIn.following.includes(userData._id);
