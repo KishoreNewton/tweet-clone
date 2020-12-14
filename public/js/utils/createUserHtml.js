@@ -1,5 +1,4 @@
 function createUserHtml(userData, showFollowButton) {
-  console.log('working')
   const { firstName, lastName, username, profilePic } = userData;
   const name = `${firstName} ${lastName}`;
   const isFollowing = userLoggedIn.following && userLoggedIn.following.includes(userData._id);
@@ -7,7 +6,7 @@ function createUserHtml(userData, showFollowButton) {
   const buttonClass = isFollowing ? 'followButton following' : 'followButton';
 
   let followButton = '';
-  if (showFollowButton && userLoggedIn._id === userData._id) {
+  if (showFollowButton && userLoggedIn._id !== userData._id) {
     followButton = `<div class="followButtonContainer">
                           <button class="${buttonClass}" data-user="${userData._id}">${text}</button>
                       </div>`;
