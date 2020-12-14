@@ -19,7 +19,7 @@ function outputSelectableUsers(results, container) {
       return;
     }
 
-    let html = createUserHtml(result, true);
+    let html = createUserHtml(result, false);
     const newElement = document.createElement('div');
     newElement.innerHTML = html;
     newElement.addEventListener('click', () => userSelected(result));
@@ -37,6 +37,10 @@ function userSelected(user) {
 }
 
 function updateSelectedUsersHtml() {
+  const removeSelectedUsersHtml = document.querySelectorAll('.selectedUser') 
+  for (i = removeSelectedUsersHtml.length; i--;) {         
+    removeSelectedUsersHtml[i].parentNode.removeChild(removeSelectedUsersHtml[i]);             
+  }
   let elements = [];
 
   selectedUsers.map(user => {
@@ -47,14 +51,11 @@ function updateSelectedUsersHtml() {
     elements.push(userElement);
   });
 
-  document.querySelector('.selectedUser') &&
-    document
-      .querySelector('.selectedUser')
-      .parentElement.removeChild(document.querySelector('.selectedUser'));
-
   elements &&
     elements.map(element => {
-      document.getElementById('selectedUsers').prepend(element);
+      document
+        .getElementById('selectedUsers')
+        .insertBefore(element, document.getElementById('userSearchTextbox'));
     });
 }
 
@@ -64,7 +65,10 @@ document.getElementById('userSearchTextbox') &&
     const textBox = event.target;
     let value = textBox.value;
 
-    if (value === '' && event.keycode === 8) {
+    if (value === '' && event.key === 'Backspace') {
+      selectedUsers.pop();
+      updateSelectedUsersHtml();
+      document.querySelector('.resultsContainer').innerHTML = '';
       return;
     }
 
