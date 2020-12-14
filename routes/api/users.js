@@ -12,8 +12,6 @@ const upload = multer({ dest: 'uploads/' });
 router.get('/api/users/', middleware.requireLogin, async (req, res, next) => {
   let searchObj = req.query;
 
-  console.log(searchObj.search)
-
   if (req.query.search !== undefined) {
     searchObj = {
       $or: [
