@@ -15,7 +15,7 @@ function outputSelectableUsers(results, container) {
   container.innerHTML = '';
 
   results.map(result => {
-    if (result._id === userLoggedIn._id) {
+    if (result._id === userLoggedIn._id || selectedUsers.some(u => u._id === result._id)) {
       return;
     }
 
@@ -29,10 +29,33 @@ function outputSelectableUsers(results, container) {
 
 function userSelected(user) {
   selectedUsers.push(user);
+  updateSelectedUsersHtml();
   document.getElementById('userSearchTextbox').value = '';
   document.getElementById('userSearchTextbox').focus();
   document.querySelector('.resultsContainer').innerHTML = '';
   document.getElementById('createChatButton').disabled = false;
+}
+
+function updateSelectedUsersHtml() {
+  let elements = [];
+
+  selectedUsers.map(user => {
+    const name = `${user.firstName} ${user.lastName}`;
+    let userElement = document.createElement('span');
+    userElement.setAttribute('class', 'selectedUser');
+    userElement.innerText = `${name}`;
+    elements.push(userElement);
+  });
+
+  document.querySelector('.selectedUser') &&
+    document
+      .querySelector('.selectedUser')
+      .parentElement.removeChild(document.querySelector('.selectedUser'));
+
+  elements &&
+    elements.map(element => {
+      document.getElementById('selectedUsers').prepend(element);
+    });
 }
 
 document.getElementById('userSearchTextbox') &&
