@@ -37,9 +37,9 @@ function userSelected(user) {
 }
 
 function updateSelectedUsersHtml() {
-  const removeSelectedUsersHtml = document.querySelectorAll('.selectedUser') 
-  for (i = removeSelectedUsersHtml.length; i--;) {         
-    removeSelectedUsersHtml[i].parentNode.removeChild(removeSelectedUsersHtml[i]);             
+  const removeSelectedUsersHtml = document.querySelectorAll('.selectedUser');
+  for (i = removeSelectedUsersHtml.length; i--; ) {
+    removeSelectedUsersHtml[i].parentNode.removeChild(removeSelectedUsersHtml[i]);
   }
   let elements = [];
 
