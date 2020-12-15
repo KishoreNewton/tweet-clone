@@ -69,6 +69,11 @@ document.getElementById('userSearchTextbox') &&
       selectedUsers.pop();
       updateSelectedUsersHtml();
       document.querySelector('.resultsContainer').innerHTML = '';
+
+      if (selectedUsers.length === 0) {
+        document.getElementById('createChatButton').disabled = true;
+      }
+
       return;
     }
 
