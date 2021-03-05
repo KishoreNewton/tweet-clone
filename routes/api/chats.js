@@ -35,4 +35,15 @@ router.post('/api/chats', middleware.requireLogin, async (req, res, next) => {
     });
 });
 
+router.get('/api/chats', middleware.requireLogin, async (req, res, next) => {
+  Chat.find({ users: { $elemMatch: { $eq: req.session.user._id } } })
+    .then(results => {
+      res.status(200).send(results);
+    })
+    .catch(error => {
+      console.log(error);
+      res.sendStatus(400);
+    });
+});
+
 module.exports = router;
