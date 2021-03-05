@@ -87,3 +87,11 @@ document.getElementById('userSearchTextbox') &&
       }
     }, 200);
   });
+
+// // For Chat Button
+// const chatIncludes = ['createChatButton'];
+// if (chatIncludes.some(el => event.target.id.includes(el))) {
+//   const data = JSON.stringify(selectedUsers);
+// }
+
+// document.getElementById("createChatButton") &&

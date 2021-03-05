@@ -238,4 +238,17 @@ document.addEventListener('click', async event => {
         .catch(err => console.log(err));
     });
   }
+
+  // For Chat
+  const chatButtonIncludes = ['createChatButton'];
+  if (chatButtonIncludes.some(el => event.target.id.includes(el))) {
+    const data = JSON.stringify(selectedUsers);
+
+    const chat = await postData('/api/chats', { users: data });
+    
+    if (!chat || !chat._id) return alert('Invalid response from server.');
+    if (chat) {
+      window.location.href = `/messages/${chat._id}`;
+    }
+  }
 });
