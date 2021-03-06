@@ -245,10 +245,31 @@ document.addEventListener('click', async event => {
     const data = JSON.stringify(selectedUsers);
 
     const chat = await postData('/api/chats', { users: data });
-    
+
     if (!chat || !chat._id) return alert('Invalid response from server.');
     if (chat) {
       window.location.href = `/messages/${chat._id}`;
     }
   }
 });
+
+// Get the Chat name
+function getChatName(chatData) {
+  let chatName = chatData.chatName;
+
+  if (!chatName) {
+    let otherChatUsers = getOtherChatUsers(chatData.users);
+    let namesArray = otherChatUsers.map(user => `${user.firstName} ${user.lastName}`);
+    chatName = namesArray.join(', ');
+  }
+
+  return chatName;
+}
+
+function getOtherChatUsers(users) {
+  if (users.length === 1) return users;
+
+  return users.filter(user => {
+    return user._id !== userLoggedIn._id;
+  });
+}

@@ -1,12 +1,27 @@
-extends  layouts/main-layout.pug
+extends layouts/main-layout.pug
 
-block content
-
+block content   
+    
     if errorMessage
         span.errorMessage #{errorMessage}
-    else
+    else 
         script.
-            var chatId = '!{chat._id}'
+            var chatId = '!{chat._id}';
+
+        .chatPageContainer
+            .chatTitleBarContainer
+                +createChatImage(chat, userLoggedIn)
+                span#chatName(data-toggle="modal", data-target="#chatNameModal") 
+            
+            .mainContentContainer
+                .chatContainer
+                    .chatMessages
+                    .footer
+                        textarea(name="messageInput", placeholder="Type a message...")
+                        button.sendMessageButton
+                            i.fas.fa-paper-plane
+        +createChatNameModal(chat)
 
 block scripts
-    script (src="/js/chatPage.js")
+    script(src="/js/utils/fetch.js")
+    script(src="/js/chatPage.js")

@@ -4,7 +4,23 @@ const middleware = require('../../middleware');
 const Chat = require('../../schemas/Chat');
 
 // GET REQUESTS
+router.get('/api/chats', middleware.requireLogin, async (req, res, next) => {
+  Chat.find({ users: { $elemMatch: { $eq: req.session.user._id } } })
+    .populate('users')
+    .sort({ updatedAt: -1 })
+    .then(results => {
+      res.status(200).send(results);
+    })
+    .catch(error => {
+      console.log(error);
+      res.sendStatus(400);
+    });
+});
 
+router.get('/api/chats/:chatId')
+
+
+// POST REQUESTS
 router.post('/api/chats', middleware.requireLogin, async (req, res, next) => {
   if (!req.body.users) {
     console.log('Users param not sent with request');
@@ -35,12 +51,10 @@ router.post('/api/chats', middleware.requireLogin, async (req, res, next) => {
     });
 });
 
-router.get('/api/chats', middleware.requireLogin, async (req, res, next) => {
-  Chat.find({ users: { $elemMatch: { $eq: req.session.user._id } } })
-    .populate('users')
-    .then(results => {
-      res.status(200).send(results);
-    })
+// PUT REQUESTS
+router.put('/api/chats/:chatId', middleware.requireLogin, async (req, res, next) => {
+  Chat.findByIdAndUpdate(req.params.chatId, req.body)
+    .then(results => res.status(204).send(results))
     .catch(error => {
       console.log(error);
       res.sendStatus(400);
