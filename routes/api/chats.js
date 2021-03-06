@@ -17,8 +17,16 @@ router.get('/api/chats', middleware.requireLogin, async (req, res, next) => {
     });
 });
 
-router.get('/api/chats/:chatId')
-
+router.get('/api/chats/:chatId', middleware.requireLogin, async (req, res, next) => {
+  Chat.findOne({ _id: req.params.chatId, users: { $elemMatch: { $eq: req.session.user._id } } })
+    .populate('users')
+    .sort({ updatedAt: -1 })
+    .then(results => res.status(200).send(results))
+    .catch(error => {
+      console.log(error);
+      res.sendStatus(400);
+    });
+});
 
 // POST REQUESTS
 router.post('/api/chats', middleware.requireLogin, async (req, res, next) => {
