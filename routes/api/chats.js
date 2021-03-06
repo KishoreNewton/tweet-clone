@@ -37,6 +37,7 @@ router.post('/api/chats', middleware.requireLogin, async (req, res, next) => {
 
 router.get('/api/chats', middleware.requireLogin, async (req, res, next) => {
   Chat.find({ users: { $elemMatch: { $eq: req.session.user._id } } })
+    .populate('users')
     .then(results => {
       res.status(200).send(results);
     })

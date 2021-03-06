@@ -29,14 +29,56 @@ function outputChatList(chatList, container) {
 }
 
 function createChatHtml(chatData) {
-  const chatName = 'Chat Name';
-  const image = '';
+  const chatName = getChatName(chatData);
+  const image = getChatImageElements(chatData);
   const latestMessage = 'This is the latest message';
 
   return `<a href='/messages/${chatData._id}' class='resultListItem'>
-                <div class='resultsDetailsContainer'>
-                    <span class='heading'>${chatName}</span>
-                    <span class='subText'>${latestMessage}</span>
+                ${image}
+                <div class='resultsDetailsContainer ellipsis'>
+                    <span class='heading ellipsis'>${chatName}</span>
+                    <span class='subText ellipsis'>${latestMessage}</span>
                 </div>
             </a>`;
+}
+
+function getChatName(chatData) {
+  let chatName = chatData.chatName;
+
+  if (!chatName) {
+    let otherChatUsers = getOtherChatUsers(chatData.users);
+    let namesArray = otherChatUsers.map(user => `${user.firstName} ${user.lastName}`);
+    chatName = namesArray.join(', ');
+  }
+
+  return chatName;
+}
+
+function getOtherChatUsers(users) {
+  if (users.length === 1) return users;
+
+  return users.filter(user => {
+    return user._id !== userLoggedIn._id;
+  });
+}
+
+function getChatImageElements(chatData) {
+  const otherChatUsers = getOtherChatUsers(chatData.users);
+  
+  let chatImage = getUserChatImageElement(otherChatUsers[0]);
+  let groupChatClass = '';
+  if (otherChatUsers.length > 1) {
+    groupChatClass = 'groupChatImage';
+    chatImage += getUserChatImageElement(otherChatUsers[1]);
+  }
+
+  return `<div class='resultsImageContainer ${groupChatClass}'>${chatImage}</div>`;
+}
+
+function getUserChatImageElement(user) {
+  if (!user || !user.profilePic) {
+    return alert('User passed into function is invalid');
+  }
+
+  return `<img src='${user.profilePic}' alt='Users profile pic' />`;
 }
