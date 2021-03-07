@@ -41,4 +41,39 @@ function messageSubmited() {
   }
 }
 
-function sendMessage(content) {}
+async function sendMessage(content) {
+  await postData('/api/messages', { content, chatId }).then(message => {
+    if (!message) {
+      alert('Could not send message');
+      document.getElementsByClassName('inputTextbox').value = content;
+    }
+    addChatMessageHtml(message);
+  });
+}
+
+function addChatMessageHtml(message) {
+  if (!message || !message._id) {
+    alert('Message is not valid');
+    return;
+  }
+
+  let messageDiv = createMessageHtml(message);
+
+  document.getElementsByClassName('chatMessages')[0];
+  const newElement = document.createElement('div');
+  newElement.innerHTML = messageDiv;
+  document.getElementsByClassName('chatMessages')[0].append(newElement);
+}
+
+function createMessageHtml(message) {
+  let isMine = message.sender._id === userLoggedIn._id;
+  const liClassName = isMine ? 'mine' : 'theirs';
+
+  return `<li class='message ${liClassName}'>
+            <div class='messageContainer'>
+              <span class='messageBody'>
+                ${message.content}
+              </span>
+            </div>
+          </li>`;
+}

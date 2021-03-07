@@ -12,6 +12,7 @@ const signoutRoute = require('./routes/logout');
 const postsApiRoute = require('./routes/api/posts');
 const usersApiRoute = require('./routes/api/users');
 const chatsApiRoute = require('./routes/api/chats');
+const messageApiRoute = require('./routes/api/messages');
 const path = require('path');
 const bodyParser = require('body-parser');
 const session = require('express-session');
@@ -54,6 +55,7 @@ app.use(profileRoutes);
 app.use(uploadRoutes);
 app.use(postsApiRoute);
 app.use(chatsApiRoute);
+app.use(messageApiRoute);
 
 app.get('/', middleware.requireLogin, (req, res, next) => {
   const payload = {

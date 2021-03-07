@@ -2,14 +2,17 @@ const express = require('express');
 const router = express.Router();
 const middleware = require('../../middleware');
 const Chat = require('../../schemas/Chat');
+const User = require('../../schemas/User');
 
 // GET REQUESTS
 router.get('/api/chats', middleware.requireLogin, async (req, res, next) => {
   Chat.find({ users: { $elemMatch: { $eq: req.session.user._id } } })
     .populate('users')
+    .populate('latestMessage')
     .sort({ updatedAt: -1 })
-    .then(results => {
-      res.status(200).send(results);
+    .then(async results => {
+      const result = await User.populate(results, { path: 'latestMessage.sender' });
+      res.status(200).send(result);
     })
     .catch(error => {
       console.log(error);

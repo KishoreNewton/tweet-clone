@@ -245,6 +245,7 @@ document.addEventListener('click', async event => {
     const data = JSON.stringify(selectedUsers);
 
     const chat = await postData('/api/chats', { users: data });
+    console.log(data)
 
     if (!chat || !chat._id) return alert('Invalid response from server.');
     if (chat) {
