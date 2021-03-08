@@ -142,7 +142,7 @@ button span {
 
 .mainSectionContainer {
   padding: 0;
-  margin-left: 10px;
+  /* margin-left: 10px; */
   border-left: 1px solid var(--lightGrey);
   border-right: 1px solid var(--lightGrey);
   display: flex;
@@ -534,6 +534,7 @@ button span {
   display: flex;
   flex-direction: column;
   min-height: 0;
+  flex: 1;
 }
 
 .chatTitleBar {
@@ -682,6 +683,7 @@ button span {
   border: none;
   padding: 8px 12px;
   height: 38px;
+  overflow-y: hidden;
 }
 
 .chatContainer .footer button {

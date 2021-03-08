@@ -51,6 +51,7 @@ document.getElementsByClassName('sendMessageButton')[0].addEventListener('click'
 
 document.getElementsByClassName('inputTextbox')[0].addEventListener('keydown', event => {
   if (event.keyCode === 13) {
+    event.preventDefault();
     messageSubmited();
     return false;
   }
