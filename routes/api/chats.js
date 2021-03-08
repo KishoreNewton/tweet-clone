@@ -3,6 +3,7 @@ const router = express.Router();
 const middleware = require('../../middleware');
 const Chat = require('../../schemas/Chat');
 const User = require('../../schemas/User');
+const Message = require('../../schemas/Message');
 
 // GET REQUESTS
 router.get('/api/chats', middleware.requireLogin, async (req, res, next) => {
@@ -24,6 +25,16 @@ router.get('/api/chats/:chatId', middleware.requireLogin, async (req, res, next)
   Chat.findOne({ _id: req.params.chatId, users: { $elemMatch: { $eq: req.session.user._id } } })
     .populate('users')
     .sort({ updatedAt: -1 })
+    .then(results => res.status(200).send(results))
+    .catch(error => {
+      console.log(error);
+      res.sendStatus(400);
+    });
+});
+
+router.get('/api/chats/:chatId/messages', middleware.requireLogin, async (req, res, next) => {
+  Message.find({ chat: req.params.chatId })
+    .populate('sender')
     .then(results => res.status(200).send(results))
     .catch(error => {
       console.log(error);

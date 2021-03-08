@@ -6,6 +6,29 @@ async function getDataHere() {
     .catch(err => {
       alert(err);
     });
+
+  await getData(`/api/chats/${chatId}/messages`)
+    .then(data => {
+      const messages = [];
+
+      data.forEach(message => {
+        const html = createMessageHtml(message);
+        messages.push(html);
+      });
+
+      const messagesHtml = messages.join('');
+      addMessagesHtmlToPage(messagesHtml);
+    })
+    .catch(err => {
+      alert(err);
+    });
+}
+
+function addMessagesHtmlToPage(html) {
+  document.getElementsByClassName('chatMessages')[0];
+  const newElement = document.createElement('div');
+  newElement.innerHTML = html;
+  document.getElementsByClassName('chatMessages')[0].append(newElement);
 }
 
 getDataHere();
@@ -59,10 +82,11 @@ function addChatMessageHtml(message) {
 
   let messageDiv = createMessageHtml(message);
 
-  document.getElementsByClassName('chatMessages')[0];
-  const newElement = document.createElement('div');
-  newElement.innerHTML = messageDiv;
-  document.getElementsByClassName('chatMessages')[0].append(newElement);
+  // document.getElementsByClassName('chatMessages')[0];
+  // const newElement = document.createElement('div');
+  // newElement.innerHTML = messageDiv;
+  // document.getElementsByClassName('chatMessages')[0].append(newElement);
+  addMessagesHtmlToPage(messageDiv);
 }
 
 function createMessageHtml(message) {
