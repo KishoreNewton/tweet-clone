@@ -11,13 +11,18 @@ async function getDataHere() {
     .then(data => {
       const messages = [];
 
-      data.forEach(message => {
-        const html = createMessageHtml(message);
+      let lastSenderId = '';
+
+      data.forEach((message, index) => {
+        const html = createMessageHtml(message, data[index + 1], lastSenderId);
+
         messages.push(html);
+        lastSenderId = message.sender._id;
       });
 
       const messagesHtml = messages.join('');
       addMessagesHtmlToPage(messagesHtml);
+      scrollToBottom(false);
     })
     .catch(err => {
       alert(err);
@@ -81,24 +86,72 @@ function addChatMessageHtml(message) {
     return;
   }
 
-  let messageDiv = createMessageHtml(message);
+  let messageDiv = createMessageHtml(message, null, '');
 
   // document.getElementsByClassName('chatMessages')[0];
   // const newElement = document.createElement('div');
   // newElement.innerHTML = messageDiv;
   // document.getElementsByClassName('chatMessages')[0].append(newElement);
   addMessagesHtmlToPage(messageDiv);
+  scrollToBottom(true);
 }
 
-function createMessageHtml(message) {
+function createMessageHtml(message, nextMessage, lastSenderId) {
+  let sender = message.sender;
+  let senderName = sender.firstName + ' ' + sender.lastName;
+
+  let currentSenderId = sender._id;
+  let nextSenderId = nextMessage != null ? nextMessage.sender._id : '';
+
+  const isFirst = lastSenderId != currentSenderId;
+  const isLast = nextSenderId != currentSenderId;
+
   let isMine = message.sender._id === userLoggedIn._id;
-  const liClassName = isMine ? 'mine' : 'theirs';
+  let liClassName = isMine ? 'mine' : 'theirs';
+
+  let nameElement = '';
+  if (isFirst) {
+    liClassName += ' first';
+
+    if (!isMine) {
+      nameElement = `<span class='senderName'>${senderName}</span>`;
+    }
+  }
+
+  let profileImage = '';
+  if (isLast) {
+    liClassName += ' last';
+    profileImage = `<img src='${sender.profilePic}'>`;
+  }
+
+  let imageContainer = '';
+  if (!isMine) {
+    imageContainer = `<div class='imageContainer'>
+                        ${profileImage}
+                      </div>`;
+  }
 
   return `<li class='message ${liClassName}'>
+            ${imageContainer}
             <div class='messageContainer'>
+              ${nameElement}
               <span class='messageBody'>
                 ${message.content}
               </span>
             </div>
           </li>`;
+}
+
+function scrollToBottom(animated) {
+  const container = document.getElementsByClassName('chatMessages')[0];
+  let scrollHeight = container.scrollHeight;
+
+  if (animated) {
+    container.scrollTo({
+      bottom: scrollHeight,
+      behavior: 'smooth'
+    });
+  } else {
+    container.scrollTop = scrollHeight;
+  }
 }
