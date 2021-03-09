@@ -1,3 +1,10 @@
+let typing = false;
+let lastTypingTime;
+
+socket.emit('join room', chatId);
+socket.on('typing', () => (document.getElementsByClassName('typingDots')[0].style.display = 'block'));
+socket.on('stop typing', () => (document.getElementsByClassName('typingDots')[0].style.display = 'none'));
+
 async function getDataHere() {
   await getData(`/api/chats/${chatId}`)
     .then(data => {
@@ -23,6 +30,9 @@ async function getDataHere() {
       const messagesHtml = messages.join('');
       addMessagesHtmlToPage(messagesHtml);
       scrollToBottom(false);
+
+      document.getElementsByClassName('loadingSpinnerContainer')[0].style.display = 'none';
+      document.getElementsByClassName('chatContainer')[0].style.visibility = 'visible';
     })
     .catch(err => {
       alert(err);
@@ -55,6 +65,8 @@ document.getElementsByClassName('sendMessageButton')[0].addEventListener('click'
 });
 
 document.getElementsByClassName('inputTextbox')[0].addEventListener('keydown', event => {
+  updateTyping();
+
   if (event.keyCode === 13) {
     event.preventDefault();
     messageSubmited();
@@ -62,11 +74,36 @@ document.getElementsByClassName('inputTextbox')[0].addEventListener('keydown', e
   }
 });
 
+function updateTyping() {
+  if (!connected) return;
+
+  if (!typing) {
+    typing = true;
+    socket.emit('typing', chatId);
+  }
+
+  lastTypingTime = new Date().getTime();
+  let timerLength = 3000;
+
+  setTimeout(() => {
+    let timeNow = new Date().getTime();
+    let timeDiff = timeNow - lastTypingTime;
+
+    if (timeNow >= timerLength && typing) {
+      socket.emit('stop typing', chatId);
+      typing = false;
+    }
+  }, timerLength);
+}
+
 function messageSubmited() {
   const content = document.getElementsByClassName('inputTextbox')[0].value.trim();
+
   if (content !== '') {
     sendMessage(content);
     document.getElementsByClassName('inputTextbox')[0].value = '';
+    socket.emit('stop typing', chatId);
+    typing = false;
   }
 }
 
@@ -76,7 +113,12 @@ async function sendMessage(content) {
       alert('Could not send message');
       document.getElementsByClassName('inputTextbox').value = content;
     }
+
     addChatMessageHtml(message);
+
+    if (connected) {
+      socket.emit('new message', message);
+    }
   });
 }
 

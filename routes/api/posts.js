@@ -3,6 +3,7 @@ const router = express.Router();
 const Post = require('../../schemas/Post');
 const User = require('../../schemas/User');
 const middleware = require('../../middleware');
+const Notification = require('../../schemas/Notifications');
 
 async function getPosts(filter) {
   let results = await Post.find(filter)
@@ -29,8 +30,8 @@ router.get('/api/posts', middleware.requireLogin, async (req, res, next) => {
     delete searchObj.isReply;
   }
 
-  if(searchObj.search !== undefined) {
-    searchObj.content = { $regex: searchObj.search, $options: "i" };
+  if (searchObj.search !== undefined) {
+    searchObj.content = { $regex: searchObj.search, $options: 'i' };
     delete searchObj.search;
   }
 
@@ -96,6 +97,17 @@ router.post('/api/posts', middleware.requireLogin, (req, res, next) => {
   Post.create(postData)
     .then(async newPost => {
       newPost = await User.populate(newPost, { path: 'postedBy' });
+      newPost = await Post.populate(newPost, { path: 'replyTo' });
+
+      if (newPost.replyTo !== undefined) {
+        await Notification.insertNotification(
+          newPost.replyTo.postedBy,
+          req.session.user._id,
+          'reply',
+          newPost._id
+        );
+      }
+
       res.status(201).send(newPost);
     })
     .catch(err => {
@@ -157,6 +169,10 @@ router.post('/api/posts/:id/retweet', middleware.requireLogin, async (req, res, 
     res.sendStatus(400);
   });
 
+  if (!deletedPost) {
+    await Notification.insertNotification(post.postedBy, userId, 'retweet', post._id);
+  }
+
   res.status(200).send(post);
 });
 
@@ -196,6 +212,10 @@ router.put('/api/posts/:id/like', middleware.requireLogin, async (req, res, next
     console.log(error);
     res.sendStatus(400);
   });
+
+  if (!isLiked) {
+    await Notification.insertNotification(post.postedBy, userId, 'postLike', post._id);
+  }
 
   res.status(200).send(post);
 });

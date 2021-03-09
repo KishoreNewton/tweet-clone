@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const User = require('../../schemas/User');
 const middleware = require('../../middleware');
+const Notification = require('../../schemas/Notifications');
 
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
@@ -85,6 +86,10 @@ router.put('/api/users/:userId/follow', async (req, res, next) => {
   User.findByIdAndUpdate(userId, { [option]: { followers: req.session.user._id } }).catch(error => {
     res.sendStatus(404);
   });
+
+  if (!isFollowing) {
+    await Notification.insertNotification(userId, req.session.user._id, 'follow', req.session.user._id);
+  }
 
   res.status(200).send(req.session.user);
 });

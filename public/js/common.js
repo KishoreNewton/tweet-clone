@@ -270,6 +270,14 @@ function getOtherChatUsers(users) {
   if (users.length === 1) return users;
 
   return users.filter(user => {
-    return user._id !== userLoggedIn._id;
+    return users.filter(user => user._id !== userLoggedIn._id);
   });
+}
+
+function messageReceived(newMessage) {
+  if (document.getElementsByClassName('chatContainer')[0].length === 0) {
+    // show popup notification
+  } else {
+    addChatMessageHtml(newMessage);
+  }
 }
