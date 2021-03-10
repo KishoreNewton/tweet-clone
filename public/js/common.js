@@ -1,5 +1,11 @@
 let cropper;
 
+async function keyhere() {
+  refreshMessagesBadge();
+  refreshNotificationsBadge();
+}
+
+keyhere();
 // Keyup Event for Tweet area
 document.addEventListener('keyup', event => {
   // For tweet place
@@ -22,7 +28,6 @@ document.addEventListener('keyup', event => {
 document.getElementById('filePhoto') &&
   document.getElementById('filePhoto').addEventListener('change', event => {
     const input = event.target;
-    console.log(event.target);
 
     if (input.files && input.files[0]) {
       let reader = new FileReader();
@@ -46,7 +51,6 @@ document.getElementById('filePhoto') &&
 document.getElementById('coverPhoto') &&
   document.getElementById('coverPhoto').addEventListener('change', event => {
     const input = event.target;
-    console.log(event.target);
 
     if (input.files && input.files[0]) {
       let reader = new FileReader();
@@ -251,6 +255,22 @@ document.addEventListener('click', async event => {
       window.location.href = `/messages/${chat._id}`;
     }
   }
+
+  // For Notifications
+  const notificationIncludes = ['notification', 'active'];
+  if (
+    event.target.classList.value.includes(notificationIncludes[0]) &&
+    event.target.classList.value.includes(notificationIncludes[1])
+  ) {
+    const container = event.target;
+    // const dataElement = document.getElementById('datahere');
+    const notificationId = container.getAttribute('data-id');
+    const href = container.getAttribute('href');
+    event.preventDefault();
+
+    const callback = () => (window.location = href);
+    await markNotificationsAsOpened(notificationId, callback);
+  }
 });
 
 // Get the Chat name
@@ -280,4 +300,46 @@ function messageReceived(newMessage) {
   } else {
     addChatMessageHtml(newMessage);
   }
+  refreshMessagesBadge();
+}
+
+async function markNotificationsAsOpened(notificationId = null, callback = null) {
+  if (callback === null) callback = () => location.reload();
+
+  const url =
+    notificationId !== null
+      ? `/api/notifications/${notificationId}/markAsOpened`
+      : `/api/notifications/markAsOpened`;
+
+  await putDataText(`${url}`).then(() => {
+    callback();
+  });
+}
+
+async function refreshMessagesBadge() {
+  await getData('/api/chats?unreadOnly=true').then(data => {
+    const numResults = data.length;
+
+    console.log(numResults);
+
+    if (numResults > 0) {
+      document.getElementById('messagesBadge').classList.add('active');
+    } else {
+      document.getElementById('messagesBadge').classList.remove('active');
+    }
+  });
+}
+
+async function refreshNotificationsBadge() {
+  await getData('/api/notifications?unreadOnly=true').then(data => {
+    const numResults = data.length;
+
+    console.log(numResults);
+
+    if (numResults > 0) {
+      document.getElementById('notificationBadge').classList.add('active');
+    } else {
+      document.getElementById('notificationBadge').classList.remove('active');
+    }
+  });
 }

@@ -44,6 +44,14 @@ async function putData(url = '') {
   return response.json();
 }
 
+async function putDataText(url = '') {
+  const response = await fetch(url, {
+    method: 'PUT',
+    mode: 'cors'
+  });
+  return response.text();
+}
+
 async function putDataWith(url = '', data) {
   const response = await fetch(url, {
     method: 'PUT',

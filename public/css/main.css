@@ -861,3 +861,28 @@ ul {
   width: 50%;
   max-width: 75px;
 }
+
+.resultListItem.active {
+  background-color: aliceblue;
+}
+
+.blocked,
+.resultItem.notification * {
+  pointer-events: none;
+}
+
+#notificationBadge,
+#messagesBadge {
+  background-color: var(--red);
+  height: 5px;
+  width: 5px;
+  border-radius: 50%;
+  position: absolute;
+  right: 0;
+  visibility: hidden;
+}
+
+#notificationBadge.active,
+#messagesBadge.active {
+  visibility: visible;
+}
