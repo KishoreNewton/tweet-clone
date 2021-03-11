@@ -1,11 +1,27 @@
 let cropper;
 
-async function keyhere() {
-  refreshMessagesBadge();
-  refreshNotificationsBadge();
+async function notificationsTrue() {
+  const results = await getData('/api/notifications');
+  let opened = {};
+  results.forEach(result => {
+    if (result.opened === true) {
+    } else {
+      opened['notification'] = true;
+    }
+  });
+
+  console.log(opened);
+
+  if (Object.keys(opened).length === 0) {
+    document.getElementById('notificationBadge').classList.remove('active');
+  } else {
+    console.log('working');
+    document.getElementById('notificationBadge').classList.add('active');
+  }
 }
 
-keyhere();
+notificationsTrue();
+
 // Keyup Event for Tweet area
 document.addEventListener('keyup', event => {
   // For tweet place
@@ -183,6 +199,7 @@ document.addEventListener('click', async event => {
         if (response.following && response.following.includes(userId)) {
           button.classList.add('following');
           button.innerText = 'Following';
+          emitNoitification(userId);
         } else {
           button.classList.remove('following');
           button.innerText = 'Follow';
@@ -316,30 +333,26 @@ async function markNotificationsAsOpened(notificationId = null, callback = null)
   });
 }
 
-async function refreshMessagesBadge() {
-  await getData('/api/chats?unreadOnly=true').then(data => {
-    const numResults = data.length;
+// async function refreshMessagesBadge() {
+//   await getData('/api/chats?unreadOnly=true').then(data => {
+//     const numResults = data.length;
 
-    console.log(numResults);
+//     if (numResults > 0) {
+//       document.getElementById('messagesBadge').classList.add('active');
+//     } else {
+//       document.getElementById('messagesBadge').classList.remove('active');
+//     }
+//   });
+// }
 
-    if (numResults > 0) {
-      document.getElementById('messagesBadge').classList.add('active');
-    } else {
-      document.getElementById('messagesBadge').classList.remove('active');
-    }
-  });
-}
+// async function refreshNotificationsBadge() {
+//   await getData('/api/notifications?unreadOnly=true').then(data => {
+//     const numResults = data.length;
 
-async function refreshNotificationsBadge() {
-  await getData('/api/notifications?unreadOnly=true').then(data => {
-    const numResults = data.length;
-
-    console.log(numResults);
-
-    if (numResults > 0) {
-      document.getElementById('notificationBadge').classList.add('active');
-    } else {
-      document.getElementById('notificationBadge').classList.remove('active');
-    }
-  });
-}
+//     if (numResults > 0) {
+//       document.getElementById('notificationBadge').classList.add('active');
+//     } else {
+//       document.getElementById('notificationBadge').classList.remove('active');
+//     }
+//   });
+// }

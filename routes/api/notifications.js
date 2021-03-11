@@ -5,9 +5,9 @@ const Notification = require('../../schemas/Notifications');
 
 // GET REQUESTS
 router.get('/api/notifications', middleware.requireLogin, async (req, res, next) => {
-  const searchObj = { userTo: req.session.user._id, notificationType: { $ne: 'newMessage' } };
+  let searchObj = { userTo: req.session.user._id, notificationType: { $ne: 'newMessage' } };
 
-  if (req.query.unreadOnly !== undefined && req.query.unreadOnly === 'true') {
+  if (req.query.unreadOnly !== undefined && req.query.unreadOnly == 'true') {
     searchObj.opened = false;
   }
 

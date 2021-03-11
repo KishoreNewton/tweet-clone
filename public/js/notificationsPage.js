@@ -1,6 +1,21 @@
 async function notificationsHere() {
-  const result = await getData('/api/notifications');
-  outputNotificationList(result, document.getElementsByClassName('resultsContainer')[0]);
+  const results = await getData('/api/notifications');
+  let opened = {};
+  results.forEach(result => {
+    if (result.opened === true) {
+    } else {
+      opened['notification'] = true;
+    }
+  });
+
+  if (opened === {}) {
+    document.getElementById('notificationBadge').classList.remove('active');
+  } else {
+    console.log('working');
+    document.getElementById('notificationBadge').classList.add('active');
+  }
+
+  outputNotificationList(results, document.getElementsByClassName('resultsContainer')[0]);
 }
 
 notificationsHere();
